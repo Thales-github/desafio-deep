@@ -18,8 +18,8 @@ class Professores extends Controller
             'documento_unico' => 'required|string|unique:professores,documento_unico|max:100',
             'data_nascimento' => 'required|date|before:today',
             'telefone' => 'nullable|string|max:15',
-            'nivel_formacao' => 'nullable|integer|in:0,1,2,3',
-            'ativo' => 'nullable|integer|in:0,1'
+            'nivel_formacao' => 'integer|in:0,1,2,3',
+            'ativo' => 'integer|in:0,1'
         ];
 
         if ($atualizar) {

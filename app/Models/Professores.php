@@ -16,29 +16,19 @@ class Professores extends Model
         "ativo",
     ];
 
-    public function setNomeAttribute($nome)
+    public function setNomeAttribute($nome): void
     {
         $this->attributes['nome'] = $nome ? mb_convert_case(trim($nome), MB_CASE_UPPER, 'UTF-8') : null;
     }
 
-    public function setEmailAttribute($email)
+    public function setEmailAttribute($email): void
     {
         $this->attributes['email'] = $email ? mb_convert_case(trim($email), MB_CASE_UPPER, 'UTF-8') : null;
     }
 
-    public function setDocumentoUnicoAttribute($documentoUnico)
+    public function setDocumentoUnicoAttribute($documentoUnico): void
     {
         $this->attributes['documento_unico'] = $documentoUnico ? strtoupper(preg_replace('/[^0-9]/', '', $documentoUnico)) : null;
-    }
-
-    public function setNivelFormacaoAttribute($nivelFormacao)
-    {
-        $this->attributes['nivel_formacao'] = $nivelFormacao ? intval($nivelFormacao) : null;
-    }
-
-    public function setAtivoAttribute($ativo)
-    {
-        $this->attributes['ativo'] = $ativo ? intval($ativo) : null;
     }
 
     public function cadastrar(array $dados): self
