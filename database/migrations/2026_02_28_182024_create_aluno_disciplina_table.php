@@ -17,11 +17,11 @@ return new class extends Migration
 
             // Chaves estrangeiras
             $table->foreignId('aluno_id')
-                ->constrained('alunos')
+                ->constrained('aluno')
                 ->onDelete('cascade');
 
             $table->foreignId('disciplina_id')
-                ->constrained('disciplinas')
+                ->constrained('disciplina')
                 ->onDelete('cascade');
 
             $table->date('data_matricula')->nullable();

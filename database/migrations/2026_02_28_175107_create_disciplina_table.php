@@ -14,11 +14,10 @@ return new class extends Migration
         Schema::create('disciplina', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->string('nome', 100)->nullable(false)->unique();
-            
-            $table->foreignId('disciplina_id')
-                ->constrained('disciplinas')
-                ->onDelete('cascade'); // Se disciplina for deletada, matrículas também são
             $table->string('descricao', 500)->nullable();
+             // Chaves estrangeiras
+            $table->foreignId('professor_id')
+                ->constrained('professor');
             $table->timestamps();
         });
     }
