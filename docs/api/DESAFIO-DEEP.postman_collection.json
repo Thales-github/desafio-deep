@@ -1,0 +1,89 @@
+{
+  "info": {
+    "_postman_id": "4c46da0f-b036-4cf2-a2d4-fd89c9a0a2ac",
+    "name": "DESAFIO-DEEP",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "25419124"
+  },
+  "item": [
+    {
+      "name": "ALUNO",
+      "item": [
+        {
+          "name": "Cadastrar",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{localhost}}}aluno/cadastrar",
+              "host": [
+                "{{localhost}}}aluno"
+              ],
+              "path": [
+                "cadastrar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{localhost}}}aluno/1/editar",
+              "host": [
+                "{{localhost}}}aluno"
+              ],
+              "path": [
+                "1",
+                "editar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{localhost}}}aluno/listar",
+              "host": [
+                "{{localhost}}}aluno"
+              ],
+              "path": [
+                "listar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Apagar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{localhost}}aluno/3/apagar",
+              "host": [
+                "{{localhost}}aluno"
+              ],
+              "path": [
+                "3",
+                "apagar"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
