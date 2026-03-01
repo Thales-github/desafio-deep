@@ -1367,6 +1367,675 @@
           ]
         }
       ]
+    },
+    {
+      "name": "DISCIPLINAS",
+      "item": [
+        {
+          "name": "Cadastrar",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"Orientação a objetos\",\r\n    \"descricao\": \"Matéria onde os alunos aprendem sobre programação\",\r\n    \"professor_id\": 3\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}disciplinas/cadastrar",
+              "host": [
+                "{{localhost}}disciplinas"
+              ],
+              "path": [
+                "cadastrar"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Cadastrar - Professor não encontrado",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"nome\": \"Lógica de programação\",\r\n    \"descricao\": \"Matéria onde os alunos aprendem sobre programação\",\r\n    \"professor_id\": 15\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{localhost}}disciplinas/cadastrar",
+                  "host": [
+                    "{{localhost}}disciplinas"
+                  ],
+                  "path": [
+                    "cadastrar"
+                  ]
+                }
+              },
+              "status": "Unprocessable Content",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 23:15:22 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"codigo\": 422,\n    \"mensagem\": \"Erro de validação\",\n    \"dados\": {\n        \"erros\": {\n            \"professor_id\": [\n                \"ID do professor não encontrado.\"\n            ]\n        }\n    }\n}"
+            },
+            {
+              "name": "Cadastrar - ok",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"nome\": \"Orientação a objetos\",\r\n    \"descricao\": \"Matéria onde os alunos aprendem sobre programação\",\r\n    \"professor_id\": 3\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{localhost}}disciplinas/cadastrar",
+                  "host": [
+                    "{{localhost}}disciplinas"
+                  ],
+                  "path": [
+                    "cadastrar"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 23:34:38 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\n    \"codigo\": 201,\n    \"mensagem\": \"Disciplina cadastrado com sucesso\",\n    \"dados\": {\n        \"nome\": \"ORIENTAÇÃO A OBJETOS\",\n        \"descricao\": \"MATÉRIA ONDE OS ALUNOS APRENDEM SOBRE PROGRAMAÇÃO\",\n        \"professor_id\": 3,\n        \"updated_at\": \"2026-03-01T23:34:38.000000Z\",\n        \"created_at\": \"2026-03-01T23:34:38.000000Z\",\n        \"id\": 3\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Listar",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{localhost}}disciplinas/listar",
+              "host": [
+                "{{localhost}}disciplinas"
+              ],
+              "path": [
+                "listar"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Listar - ok",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{localhost}}disciplinas/listar",
+                  "host": [
+                    "{{localhost}}disciplinas"
+                  ],
+                  "path": [
+                    "listar"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 23:25:53 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"codigo\": 200,\n    \"mensagem\": \"\",\n    \"dados\": [\n        {\n            \"id\": 1,\n            \"nome\": \"LÓGICA DE PROGRAMAÇÃO\",\n            \"descricao\": \"MATÉRIA ONDE OS ALUNOS APRENDEM SOBRE PROGRAMAÇÃO\",\n            \"professor_id\": 1\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Detalhar",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{localhost}}disciplinas/detalhar/2",
+              "host": [
+                "{{localhost}}disciplinas"
+              ],
+              "path": [
+                "detalhar",
+                "2"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Detalhar - ok",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{localhost}}disciplinas/detalhar/1",
+                  "host": [
+                    "{{localhost}}disciplinas"
+                  ],
+                  "path": [
+                    "detalhar",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 23:35:46 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"codigo\": 200,\n    \"mensagem\": \"\",\n    \"dados\": {\n        \"id\": 1,\n        \"nome\": \"LÓGICA DE PROGRAMAÇÃO\",\n        \"descricao\": \"MATÉRIA ONDE OS ALUNOS APRENDEM SOBRE PROGRAMAÇÃO\",\n        \"professor_id\": 1,\n        \"created_at\": \"2026-03-01T23:15:06.000000Z\",\n        \"updated_at\": \"2026-03-01T23:15:06.000000Z\"\n    }\n}"
+            },
+            {
+              "name": "Detalhar - Disciplina não encontrada",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{localhost}}disciplinas/detalhar/2",
+                  "host": [
+                    "{{localhost}}disciplinas"
+                  ],
+                  "path": [
+                    "detalhar",
+                    "2"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 23:36:13 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"codigo\": 404,\n    \"mensagem\": \"Disciplina não encontrado\",\n    \"dados\": []\n}"
+            }
+          ]
+        },
+        {
+          "name": "Atualizar",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Matemática\",\r\n    \"descricao\": \"Matéria onde os alunos aprendem a somar\",\r\n    \"professor_id\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}disciplinas/atualizar/6",
+              "host": [
+                "{{localhost}}disciplinas"
+              ],
+              "path": [
+                "atualizar",
+                "6"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Atualizar - ok",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Matemática\",\r\n    \"descricao\": \"Matéria onde os alunos aprendem a somar\",\r\n    \"professor_id\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{localhost}}disciplinas/atualizar/1",
+                  "host": [
+                    "{{localhost}}disciplinas"
+                  ],
+                  "path": [
+                    "atualizar",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 23:37:43 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"codigo\": 200,\n    \"mensagem\": \"Dados atualizados com sucesso\",\n    \"dados\": {\n        \"id\": 1,\n        \"nome\": \"MATEMÁTICA\",\n        \"descricao\": \"MATÉRIA ONDE OS ALUNOS APRENDEM A SOMAR\",\n        \"professor_id\": 1,\n        \"created_at\": \"2026-03-01T23:15:06.000000Z\",\n        \"updated_at\": \"2026-03-01T23:37:43.000000Z\"\n    }\n}"
+            },
+            {
+              "name": "Atualizar - Disciplina não encontrada",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Matemática\",\r\n    \"descricao\": \"Matéria onde os alunos aprendem a somar\",\r\n    \"professor_id\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{localhost}}disciplinas/atualizar/6",
+                  "host": [
+                    "{{localhost}}disciplinas"
+                  ],
+                  "path": [
+                    "atualizar",
+                    "6"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 23:38:11 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\n    \"codigo\": 404,\n    \"mensagem\": \"Disciplina não encontrada\",\n    \"dados\": []\n}"
+            }
+          ]
+        },
+        {
+          "name": "Apagar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": []
+            },
+            "url": {
+              "raw": "{{localhost}}disciplinas/apagar/3",
+              "host": [
+                "{{localhost}}disciplinas"
+              ],
+              "path": [
+                "apagar",
+                "3"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Apagar - ok",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [],
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{localhost}}disciplinas/apagar/3",
+                  "host": [
+                    "{{localhost}}disciplinas"
+                  ],
+                  "path": [
+                    "apagar",
+                    "3"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 23:39:14 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"codigo\": 200,\n    \"mensagem\": \"Disciplina apagado com sucesso\",\n    \"dados\": []\n}"
+            },
+            {
+              "name": "Apagar - Disciplina não encontrada",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [],
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{localhost}}disciplinas/apagar/3",
+                  "host": [
+                    "{{localhost}}disciplinas"
+                  ],
+                  "path": [
+                    "apagar",
+                    "3"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 23:39:34 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"codigo\": 404,\n    \"mensagem\": \"Disciplina não encontrado\",\n    \"dados\": []\n}"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
