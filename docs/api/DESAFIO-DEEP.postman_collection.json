@@ -7,7 +7,7 @@
   },
   "item": [
     {
-      "name": "ALUNO",
+      "name": "ALUNOS",
       "item": [
         {
           "name": "Cadastrar",
@@ -710,6 +710,659 @@
                 }
               ],
               "body": "{\n    \"codigo\": 404,\n    \"mensagem\": \"Aluno não encontrado\",\n    \"dados\": []\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "PROFESSORES",
+      "item": [
+        {
+          "name": "Listar",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{localhost}}professores/listar",
+              "host": [
+                "{{localhost}}professores"
+              ],
+              "path": [
+                "listar"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Listar - ok",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{localhost}}professores/listar",
+                  "host": [
+                    "{{localhost}}professores"
+                  ],
+                  "path": [
+                    "listar"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 21:08:46 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\n    \"codigo\": 200,\n    \"mensagem\": \"\",\n    \"dados\": [\n        {\n            \"id\": 1,\n            \"nome\": \"THALES VITOR\",\n            \"email\": \"THALESVIT25ACIRINO@OUTLOOK.COM\",\n            \"telefone\": \"(11) 98890-3318\",\n            \"nivel_formacao\": 2,\n            \"ativo\": 0\n        },\n        {\n            \"id\": 2,\n            \"nome\": \"THALES VITOR\",\n            \"email\": \"THALESVIT252ACIRINO@OUTLOOK.COM\",\n            \"telefone\": \"(11) 98890-3318\",\n            \"nivel_formacao\": 2,\n            \"ativo\": 1\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Detalhar",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{localhost}}professores/detalhar/1",
+              "host": [
+                "{{localhost}}professores"
+              ],
+              "path": [
+                "detalhar",
+                "1"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Detalhar - Professor não encontrado",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{localhost}}professores/detalhar/4",
+                  "host": [
+                    "{{localhost}}professores"
+                  ],
+                  "path": [
+                    "detalhar",
+                    "4"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 21:09:59 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"codigo\": 404,\n    \"mensagem\": \"Professor não encontrado\",\n    \"dados\": []\n}"
+            },
+            {
+              "name": "Detalhar - ok",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{localhost}}professores/detalhar/1",
+                  "host": [
+                    "{{localhost}}professores"
+                  ],
+                  "path": [
+                    "detalhar",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 21:10:28 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\n    \"codigo\": 200,\n    \"mensagem\": \"\",\n    \"dados\": {\n        \"id\": 1,\n        \"nome\": \"THALES VITOR\",\n        \"email\": \"THALESVIT25ACIRINO@OUTLOOK.COM\",\n        \"documento_unico\": \"44889\",\n        \"data_nascimento\": \"2002-04-26\",\n        \"telefone\": \"(11) 98890-3318\",\n        \"nivel_formacao\": 2,\n        \"ativo\": 0,\n        \"created_at\": \"2026-03-01T21:08:29.000000Z\",\n        \"updated_at\": \"2026-03-01T21:08:29.000000Z\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Cadastrar",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"THALES VITOR\",\r\n    \"email\": \"THALES252ACIRINO@OUTLOOK.COM\",\r\n    \"documento_unico\": \"442889\",\r\n    \"data_nascimento\": \"2002-04-26\",\r\n    \"telefone\": \"(11) 98890-3318\",\r\n    \"nivel_formacao\": 3,\r\n    \"ativo\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}professores/cadastrar",
+              "host": [
+                "{{localhost}}professores"
+              ],
+              "path": [
+                "cadastrar"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Cadastrar - Campos inválidos",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"nome\": \"THALES VITOR\",\r\n    \"email\": \"THALESVIT252ACIRINO@OUTLOOK.COM\",\r\n    \"documento_unico\": \"4422889\",\r\n    \"data_nascimento\": \"2002-04-26\",\r\n    \"telefone\": \"(11) 98890-3318\",\r\n    \"nivel_formacao\": 2,\r\n    \"ativo\": 10\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{localhost}}professores/cadastrar",
+                  "host": [
+                    "{{localhost}}professores"
+                  ],
+                  "path": [
+                    "cadastrar"
+                  ]
+                }
+              },
+              "status": "Unprocessable Content",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 21:08:58 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"codigo\": 422,\n    \"mensagem\": \"Erro de validação\",\n    \"dados\": {\n        \"erros\": {\n            \"email\": [\n                \"email inválido.\"\n            ],\n            \"documento_unico\": [\n                \"documento_unico inválido.\"\n            ],\n            \"ativo\": [\n                \"ativo inválido.\"\n            ]\n        }\n    }\n}"
+            },
+            {
+              "name": "Cadastrar - ok",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"nome\": \"THALES VITOR\",\r\n    \"email\": \"THALES252ACIRINO@OUTLOOK.COM\",\r\n    \"documento_unico\": \"442889\",\r\n    \"data_nascimento\": \"2002-04-26\",\r\n    \"telefone\": \"(11) 98890-3318\",\r\n    \"nivel_formacao\": 3,\r\n    \"ativo\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{localhost}}professores/cadastrar",
+                  "host": [
+                    "{{localhost}}professores"
+                  ],
+                  "path": [
+                    "cadastrar"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 21:13:19 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\n    \"codigo\": 201,\n    \"mensagem\": \"Professor cadastrado com sucesso\",\n    \"dados\": {\n        \"nome\": \"THALES VITOR\",\n        \"email\": \"THALES252ACIRINO@OUTLOOK.COM\",\n        \"documento_unico\": \"442889\",\n        \"data_nascimento\": \"2002-04-26\",\n        \"telefone\": \"(11) 98890-3318\",\n        \"nivel_formacao\": 3,\n        \"ativo\": 1,\n        \"updated_at\": \"2026-03-01T21:13:19.000000Z\",\n        \"created_at\": \"2026-03-01T21:13:19.000000Z\",\n        \"id\": 3\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Atualizar",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"THALES VITOR\",\r\n    \"email\": \"THALECIRINO@OUTLOOK.COM\",\r\n    \"documento_unico\": \"12365478965\",\r\n    \"data_nascimento\": \"2002-04-26\",\r\n    \"telefone\": \"(11) 98890-3318\",\r\n    \"nivel_formacao\": 2,\r\n    \"ativo\": 0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}professores/atualizar/2",
+              "host": [
+                "{{localhost}}professores"
+              ],
+              "path": [
+                "atualizar",
+                "2"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Atualizar - Campos inválidos",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"nome\": \"THALES VITOR\",\r\n    \"email\": \"THALESVIT25ACIRINO@OUTLOOK.COM\",\r\n    \"documento_unico\": \"44889\",\r\n    \"data_nascimento\": \"2002-04-26\",\r\n    \"telefone\": \"(11) 98890-3318\",\r\n    \"nivel_formacao\": 2,\r\n    \"ativo\": 0\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{localhost}}professores/atualizar/2",
+                  "host": [
+                    "{{localhost}}professores"
+                  ],
+                  "path": [
+                    "atualizar",
+                    "2"
+                  ]
+                }
+              },
+              "status": "Unprocessable Content",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 21:26:00 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"codigo\": 422,\n    \"mensagem\": \"Erro de validação\",\n    \"dados\": {\n        \"erros\": {\n            \"email\": [\n                \"email inválido.\"\n            ],\n            \"documento_unico\": [\n                \"documento_unico inválido.\"\n            ]\n        }\n    }\n}"
+            },
+            {
+              "name": "Atualizar - ok",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"nome\": \"THALES VITOR\",\r\n    \"email\": \"THALECIRINO@OUTLOOK.COM\",\r\n    \"documento_unico\": \"12365478965\",\r\n    \"data_nascimento\": \"2002-04-26\",\r\n    \"telefone\": \"(11) 98890-3318\",\r\n    \"nivel_formacao\": 2,\r\n    \"ativo\": 0\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{localhost}}professores/atualizar/2",
+                  "host": [
+                    "{{localhost}}professores"
+                  ],
+                  "path": [
+                    "atualizar",
+                    "2"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 21:26:46 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"codigo\": 200,\n    \"mensagem\": \"Dados atualizados com sucesso\",\n    \"dados\": {\n        \"id\": 2,\n        \"nome\": \"THALES VITOR\",\n        \"email\": \"THALECIRINO@OUTLOOK.COM\",\n        \"documento_unico\": \"12365478965\",\n        \"data_nascimento\": \"2002-04-26\",\n        \"telefone\": \"(11) 98890-3318\",\n        \"nivel_formacao\": 2,\n        \"ativo\": 0,\n        \"created_at\": \"2026-03-01T21:08:41.000000Z\",\n        \"updated_at\": \"2026-03-01T21:26:46.000000Z\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Apagar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{localhost}}professores/apagar/2",
+              "host": [
+                "{{localhost}}professores"
+              ],
+              "path": [
+                "apagar",
+                "2"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Apagar - Professor não encontrado",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{localhost}}professores/apagar/4",
+                  "host": [
+                    "{{localhost}}professores"
+                  ],
+                  "path": [
+                    "apagar",
+                    "4"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 21:27:28 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"codigo\": 404,\n    \"mensagem\": \"Professor não encontrado\",\n    \"dados\": []\n}"
+            },
+            {
+              "name": "Apagar - ok",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{localhost}}professores/apagar/2",
+                  "host": [
+                    "{{localhost}}professores"
+                  ],
+                  "path": [
+                    "apagar",
+                    "2"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 21:28:05 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"codigo\": 200,\n    \"mensagem\": \"Professor apagado com sucesso\",\n    \"dados\": []\n}"
             }
           ]
         }
