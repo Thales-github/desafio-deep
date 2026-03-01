@@ -38,12 +38,29 @@ class Alunos extends Controller
     private function vetorMensagemCamposInválidos(): array
     {
         return [
-            'nome.required' => 'O nome é obrigatório.',
-            'documento_unico.required' => 'O documento_unico é obrigatório.',
-            'email.required' => 'O email é obrigatório.',
-            'email.email' => 'Informe um email válido.',
-            'data_nascimento.required' => 'A data_nascimento é obrigatória.',
-            'data_nascimento.date' => 'Informe uma data nascimento válida.',
+            // Documento único
+            'documento_unico.required' => 'CPF/CNPJ é obrigatório.',
+            'documento_unico.unique' => 'Documento inválido.',// Segurança não pode revelar que já existe
+            'documento_unico.string' => 'Documento inválido.',
+
+            // Email
+            'email.required' => 'E-mail é obrigatório.',
+            'email.unique' => 'Email inválido.',// Segurança não pode revelar que já existe
+            'email.email' => 'Formato de e-mail inválido.',
+
+            // Nome
+            'nome.required' => 'Nome completo é obrigatório.',
+            'nome.max' => 'Nome deve ter no máximo :max caracteres.',
+
+            // Data nascimento
+            'data_nascimento.required' => 'Data de nascimento é obrigatória.',
+            'data_nascimento.before' => 'Você deve ter pelo menos 16 anos para se cadastrar.',
+
+            // CEP
+            'cep.size' => 'CEP deve ter 8 dígitos.',
+
+            // UF
+            'uf.size' => 'UF deve ter 2 caracteres.'
         ];
     }
 

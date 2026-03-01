@@ -21,25 +21,51 @@ class Alunos extends Model
         "uf",
     ];
 
-    /**
-     * Cadastra um novo aluno
-     */
+    public function setNomeAttribute($nome)
+    {
+        $this->attributes['nome'] = $nome ? mb_convert_case(trim($nome), MB_CASE_UPPER, 'UTF-8') : null;
+    }
+
+    public function setDocumentoUnicoAttribute($documentoUnico)
+    {
+        $this->attributes['documento_unico'] = $documentoUnico ? strtoupper(preg_replace('/[^0-9]/', '', $documentoUnico)) : null;
+    }
+
+    public function setEmailAttribute($email)
+    {
+        $this->attributes['email'] = $email ? mb_convert_case(trim($email), MB_CASE_UPPER, 'UTF-8') : null;
+    }
+
+    public function setCepAttribute($cep)
+    {
+        $this->attributes['cep'] = $cep ? preg_replace('/[^0-9]/', '', $cep) : null;
+    }
+
+    public function setLogradouroAttribute($logradouro)
+    {
+        $this->attributes['logradouro'] = $logradouro ? mb_convert_case(trim($logradouro), MB_CASE_UPPER, 'UTF-8') : null;
+    }
+
+    public function setBairroAttribute($bairro)
+    {
+        $this->attributes['bairro'] = $bairro ? mb_convert_case(trim($bairro), MB_CASE_UPPER, 'UTF-8') : null;
+    }
+
+    public function setUfAttribute($uf)
+    {
+        $this->attributes['uf'] = $uf ? strtoupper(trim($uf)) : null;
+    }
+
     public function cadastrar(array $dados): self
     {
         return self::create($dados);
     }
 
-    /**
-     * Retorna aluno por ID ou lança exception
-     */
     public function detalhar(int $id): self
     {
         return self::findOrFail($id);
     }
 
-    /**
-     * Atualiza dados do aluno
-     */
     public function atualizar(array $dados): bool
     {
         return $this->update($dados);
