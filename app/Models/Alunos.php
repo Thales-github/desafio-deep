@@ -61,6 +61,20 @@ class Alunos extends Model
         return self::create($dados);
     }
 
+    public function listar()
+    {
+
+        return $this->all([
+            'id',
+            'nome',
+            'documento_unico',
+            'email',
+            'ativo',
+            'telefone',
+            'uf',
+        ]);
+    }
+
     public function detalhar(int $id): self
     {
         return self::findOrFail($id);
@@ -69,5 +83,11 @@ class Alunos extends Model
     public function atualizar(array $dados): bool
     {
         return $this->update($dados);
+    }
+
+    public function apagar(int $id): bool
+    {
+        $aluno = $this->findOrFail($id);
+        return $aluno->delete();
     }
 }

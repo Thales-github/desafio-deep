@@ -15,38 +15,373 @@
             "method": "POST",
             "header": [],
             "body": {
-              "mode": "formdata",
-              "formdata": []
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"THALES VITOR\",\r\n    \"documento_unico\": \"44889\",\r\n    \"email\": \"THALESVIT25ACIRINO@OUTLOOK.COM\",\r\n    \"data_nascimento\": \"2002-04-26\",\r\n    \"cep\": \"02990010\",\r\n    \"logradouro\": \"RUA ENSEADA DE BRITO\",\r\n    \"bairro\": \"JARDIM TAIPAS\",\r\n    \"uf\": \"SP\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "url": {
-              "raw": "{{localhost}}}aluno/cadastrar",
+              "raw": "{{localhost}}alunos/cadastrar",
               "host": [
-                "{{localhost}}}aluno"
+                "{{localhost}}alunos"
               ],
               "path": [
                 "cadastrar"
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Cadastrar - ok",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"nome\": \"THALES VITOR\",\r\n    \"documento_unico\": \"157444889\",\r\n    \"email\": \"THALESVIT25ACIRINO@OUTLOOK.COM\",\r\n    \"data_nascimento\": \"2002-04-26\",\r\n    \"cep\": \"02990010\",\r\n    \"logradouro\": \"RUA ENSEADA DE BRITO\",\r\n    \"bairro\": \"JARDIM TAIPAS\",\r\n    \"uf\": \"SP\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{localhost}}alunos/cadastrar",
+                  "host": [
+                    "{{localhost}}alunos"
+                  ],
+                  "path": [
+                    "cadastrar"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 17:42:48 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"codigo\": 201,\n    \"mensagem\": \"Aluno cadastrado com sucesso\",\n    \"dados\": {\n        \"nome\": \"THALES VITOR\",\n        \"documento_unico\": \"157444889\",\n        \"email\": \"THALESVIT25ACIRINO@OUTLOOK.COM\",\n        \"data_nascimento\": \"2002-04-26\",\n        \"cep\": \"02990010\",\n        \"logradouro\": \"RUA ENSEADA DE BRITO\",\n        \"bairro\": \"JARDIM TAIPAS\",\n        \"uf\": \"SP\",\n        \"updated_at\": \"2026-03-01T17:42:48.000000Z\",\n        \"created_at\": \"2026-03-01T17:42:48.000000Z\",\n        \"id\": 3\n    }\n}"
+            },
+            {
+              "name": "Cadastrar - Campos inválidos",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"nome\": \"THALES VITOR\",\r\n    \"documento_unico\": \"44889\",\r\n    \"email\": \"THALESVIT25ACIRINO@OUTLOOK.COM\",\r\n    \"data_nascimento\": \"2002-04-26\",\r\n    \"cep\": \"02990010\",\r\n    \"logradouro\": \"RUA ENSEADA DE BRITO\",\r\n    \"bairro\": \"JARDIM TAIPAS\",\r\n    \"uf\": \"SP\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{localhost}}alunos/cadastrar",
+                  "host": [
+                    "{{localhost}}alunos"
+                  ],
+                  "path": [
+                    "cadastrar"
+                  ]
+                }
+              },
+              "status": "Unprocessable Content",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 17:56:36 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\n    \"codigo\": 422,\n    \"mensagem\": \"Erro de validação\",\n    \"dados\": {\n        \"erros\": {\n            \"email\": [\n                \"email inválido.\"\n            ]\n        }\n    }\n}"
+            }
+          ]
         },
         {
           "name": "Atualizar",
           "request": {
             "method": "PUT",
             "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"THALES VITOR\",\r\n    \"documento_unico\": \"157444889\",\r\n    \"email\": \"testeEmial@gmail.com\",\r\n    \"data_nascimento\": \"2002-04-26\",\r\n    \"cep\": \"02990010\",\r\n    \"logradouro\": \"RUA ENSEADA DE BRITO\",\r\n    \"bairro\": \"JARDIM TAIPAS\",\r\n    \"uf\": \"SP\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
-              "raw": "{{localhost}}}aluno/1/editar",
+              "raw": "{{localhost}}alunos/atualizar/3",
               "host": [
-                "{{localhost}}}aluno"
+                "{{localhost}}alunos"
               ],
               "path": [
-                "1",
-                "editar"
+                "atualizar",
+                "3"
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Atualizar - Aluno não encontrado",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"nome\": \"THALES VITOR\",\r\n    \"documento_unico\": \"157444889\",\r\n    \"email\": \"\",\r\n    \"data_nascimento\": \"2002-04-26\",\r\n    \"cep\": \"02990010\",\r\n    \"logradouro\": \"RUA ENSEADA DE BRITO\",\r\n    \"bairro\": \"JARDIM TAIPAS\",\r\n    \"uf\": \"SP\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{localhost}}alunos/atualizar/1",
+                  "host": [
+                    "{{localhost}}alunos"
+                  ],
+                  "path": [
+                    "atualizar",
+                    "1"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 17:44:18 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"codigo\": 404,\n    \"mensagem\": \"Aluno não encontrado\",\n    \"dados\": []\n}"
+            },
+            {
+              "name": "Atualizar - Campos inválidos",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"nome\": \"THALES VITOR\",\r\n    \"documento_unico\": \"157444889\",\r\n    \"email\": \"\",\r\n    \"data_nascimento\": \"2002-04-26\",\r\n    \"cep\": \"02990010\",\r\n    \"logradouro\": \"RUA ENSEADA DE BRITO\",\r\n    \"bairro\": \"JARDIM TAIPAS\",\r\n    \"uf\": \"SP\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{localhost}}alunos/atualizar/3",
+                  "host": [
+                    "{{localhost}}alunos"
+                  ],
+                  "path": [
+                    "atualizar",
+                    "3"
+                  ]
+                }
+              },
+              "status": "Unprocessable Content",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 17:45:35 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"codigo\": 422,\n    \"mensagem\": \"Erro de validação\",\n    \"dados\": {\n        \"erros\": {\n            \"email\": [\n                \"email é obrigatório.\"\n            ]\n        }\n    }\n}"
+            },
+            {
+              "name": "Atualizar - ok",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"nome\": \"THALES VITOR\",\r\n    \"documento_unico\": \"157444889\",\r\n    \"email\": \"testeEmial@gmail.com\",\r\n    \"data_nascimento\": \"2002-04-26\",\r\n    \"cep\": \"02990010\",\r\n    \"logradouro\": \"RUA ENSEADA DE BRITO\",\r\n    \"bairro\": \"JARDIM TAIPAS\",\r\n    \"uf\": \"SP\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{localhost}}alunos/atualizar/3",
+                  "host": [
+                    "{{localhost}}alunos"
+                  ],
+                  "path": [
+                    "atualizar",
+                    "3"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 17:46:06 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"codigo\": 200,\n    \"mensagem\": \"Dados atualizados com sucesso\",\n    \"dados\": {\n        \"id\": 3,\n        \"nome\": \"THALES VITOR\",\n        \"documento_unico\": \"157444889\",\n        \"email\": \"TESTEEMIAL@GMAIL.COM\",\n        \"data_nascimento\": \"2002-04-26\",\n        \"ativo\": 0,\n        \"telefone\": null,\n        \"cep\": \"02990010\",\n        \"logradouro\": \"RUA ENSEADA DE BRITO\",\n        \"bairro\": \"JARDIM TAIPAS\",\n        \"uf\": \"SP\",\n        \"created_at\": \"2026-03-01T17:42:48.000000Z\",\n        \"updated_at\": \"2026-03-01T17:46:06.000000Z\"\n    }\n}"
+            }
+          ]
         },
         {
           "name": "Listar",
@@ -54,16 +389,70 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{localhost}}}aluno/listar",
+              "raw": "{{localhost}}alunos/listar",
               "host": [
-                "{{localhost}}}aluno"
+                "{{localhost}}alunos"
               ],
               "path": [
                 "listar"
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Listar - ok",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{localhost}}alunos/listar",
+                  "host": [
+                    "{{localhost}}alunos"
+                  ],
+                  "path": [
+                    "listar"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 19:33:45 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"codigo\": 200,\n    \"mensagem\": \"\",\n    \"dados\": [\n        {\n            \"id\": 3,\n            \"nome\": \"THALES VITOR\",\n            \"documento_unico\": \"157444889\",\n            \"email\": \"TESTEEMIAL@GMAIL.COM\",\n            \"ativo\": 0,\n            \"telefone\": null,\n            \"uf\": \"SP\"\n        },\n        {\n            \"id\": 4,\n            \"nome\": \"THALES VITOR\",\n            \"documento_unico\": \"15744889\",\n            \"email\": \"THALESVIT25ACIRINO@OUTLOOK.COM\",\n            \"ativo\": 0,\n            \"telefone\": null,\n            \"uf\": \"SP\"\n        }\n    ]\n}"
+            }
+          ]
         },
         {
           "name": "Apagar",
@@ -71,17 +460,258 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{localhost}}aluno/3/apagar",
+              "raw": "{{localhost}}alunos/apagar/3",
               "host": [
-                "{{localhost}}aluno"
+                "{{localhost}}alunos"
               ],
               "path": [
-                "3",
-                "apagar"
+                "apagar",
+                "3"
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Apagar - erro",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{localhost}}alunos/apagar/3",
+                  "host": [
+                    "{{localhost}}alunos"
+                  ],
+                  "path": [
+                    "apagar",
+                    "3"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 19:35:22 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"codigo\": 500,\n    \"mensagem\": \"Erro ao apagar aluno\",\n    \"dados\": []\n}"
+            },
+            {
+              "name": "Apagar - ok",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{localhost}}alunos/apagar/3",
+                  "host": [
+                    "{{localhost}}alunos"
+                  ],
+                  "path": [
+                    "apagar",
+                    "3"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 19:37:04 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"codigo\": 200,\n    \"mensagem\": \"Aluno apagado com sucesso\",\n    \"dados\": []\n}"
+            }
+          ]
+        },
+        {
+          "name": "Detalhar",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{localhost}}alunos/detalhar/4",
+              "host": [
+                "{{localhost}}alunos"
+              ],
+              "path": [
+                "detalhar",
+                "4"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Detalhar - ok",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{localhost}}alunos/detalhar/4",
+                  "host": [
+                    "{{localhost}}alunos"
+                  ],
+                  "path": [
+                    "detalhar",
+                    "4"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 19:46:54 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"codigo\": 200,\n    \"mensagem\": \"\",\n    \"dados\": {\n        \"id\": 4,\n        \"nome\": \"THALES VITOR\",\n        \"documento_unico\": \"15744889\",\n        \"email\": \"THALESVIT25ACIRINO@OUTLOOK.COM\",\n        \"data_nascimento\": \"2002-04-26\",\n        \"ativo\": 0,\n        \"telefone\": null,\n        \"cep\": \"02990010\",\n        \"logradouro\": \"RUA ENSEADA DE BRITO\",\n        \"bairro\": \"JARDIM TAIPAS\",\n        \"uf\": \"SP\",\n        \"created_at\": \"2026-03-01T17:50:57.000000Z\",\n        \"updated_at\": \"2026-03-01T17:50:57.000000Z\"\n    }\n}"
+            },
+            {
+              "name": "Detalhar - erro",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{localhost}}alunos/detalhar/2",
+                  "host": [
+                    "{{localhost}}alunos"
+                  ],
+                  "path": [
+                    "detalhar",
+                    "2"
+                  ]
+                }
+              },
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 01 Mar 2026 19:47:43 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\n    \"codigo\": 404,\n    \"mensagem\": \"Aluno não encontrado\",\n    \"dados\": []\n}"
+            }
+          ]
         }
       ]
     }
