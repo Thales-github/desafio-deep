@@ -12,17 +12,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 require __DIR__ . '/settings.php';
 
-Route::prefix('aluno')->name('aluno.')->group(function () {
+// Route::prefix('aluno')->name('aluno.')->group(function () {
 
-    // listar
-    Route::get('/listar', [Aluno::class, 'listar'])->name('listar');
+    // // listar
+    // Route::get('/listar', [Aluno::class, 'listar'])->name('listar');
 
-    // Salvar cadastro
-    Route::post('/', [Aluno::class, 'cadastrar'])->name('salvar');
+    // // Salvar cadastro
+    // Route::post('/cadastrar', [Aluno::class, 'cadastrar'])->name('cadastrar');
 
-    // Atualizar
-    Route::put('/{id}', [Aluno::class, 'atualizar'])->name('atualizar');
+    // // Atualizar
+    // Route::put('/{id}', [Aluno::class, 'atualizar'])->name('atualizar');
 
-    // Apagar
-    Route::delete('/{id}', [Aluno::class, 'apagar'])->name('apagar');
-});
+    // // Apagar
+    // Route::delete('/{id}', [Aluno::class, 'apagar'])->name('apagar');
+// });

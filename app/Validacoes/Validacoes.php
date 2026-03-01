@@ -5,11 +5,12 @@ namespace App\Validacoes;
 class Validacoes
 {
 
-    public function gerarRetornoHttp(int $codigoHttp,string $mensagem, array $dados = []): array
+    // cria um vetor padronizado para retorno da api
+    public function gerarRetornoHttp(int $codigoHttp, string $mensagem, mixed $dados = []): array
     {
         return [
             'codigo' => $codigoHttp,
-            'mensagem' => 'Aluno cadastrado com sucesso',
+            'mensagem' => $mensagem,
             'dados' => $dados
         ];
     }

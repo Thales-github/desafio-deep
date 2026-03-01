@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Aluno as AlunoModel;
+use App\Models\Alunos as AlunosModel;
 use Illuminate\Http\JsonResponse;
 use App\Validacoes\Validacoes;
 
-class Aluno extends Controller
+class Alunos extends Controller
 {
 
     public function listar(Request $request) {}
@@ -34,14 +34,31 @@ class Aluno extends Controller
         return $validacoesDeAluno;
     }
 
+    // Personalizando as mensagens de erro para campos obrigatórios
+    private function vetorMensagemCamposInválidos(): array
+    {
+        return [
+            'nome.required' => 'O nome é obrigatório.',
+            'documento_unico.required' => 'O documento_unico é obrigatório.',
+            'email.required' => 'O email é obrigatório.',
+            'email.email' => 'Informe um email válido.',
+            'data_nascimento.required' => 'A data_nascimento é obrigatória.',
+            'data_nascimento.date' => 'Informe uma data nascimento válida.',
+        ];
+    }
+
     public function cadastrar(Request $request): JsonResponse
     {
         $validacoes = new Validacoes();
+        $alunosModel = new AlunosModel();
 
         try {
-            $dadosValidos = $request->validate($this->gerarVetorValidacaoDeAluno());
+            $dadosValidos = $request->validate(
+                $this->gerarVetorValidacaoDeAluno(),
+                $this->vetorMensagemCamposInválidos()
+            );
 
-            $aluno = AlunoModel::cadastrar($dadosValidos);
+            $aluno = $alunosModel->cadastrar($dadosValidos);
 
             return response()->json($validacoes->gerarRetornoHttp(201, 'Aluno cadastrado com sucesso', $aluno));
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -55,14 +72,15 @@ class Aluno extends Controller
     {
 
         $validacoes = new Validacoes();
+        $AlunosModel = new alunosModel();
 
         try {
 
-            $aluno = AlunoModel::detalhar($id);
+            $aluno = $AlunosModel->detalhar($id);
 
             $regras = $this->gerarVetorValidacaoDeAluno(true);
 
-            $dadosValidados = $request->validate($regras);
+            $dadosValidados = $request->validate($regras, $this->vetorMensagemCamposInválidos());
 
             $aluno->atualizar($dadosValidados);
 

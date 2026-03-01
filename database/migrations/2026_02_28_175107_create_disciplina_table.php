@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('disciplina', function (Blueprint $table) {
+        Schema::create('disciplinas', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->string('nome', 100)->nullable(false)->unique();
             $table->string('descricao', 500)->nullable();
              // Chaves estrangeiras
             $table->foreignId('professor_id')
-                ->constrained('professor');
+                ->constrained('professores');
             $table->timestamps();
         });
     }

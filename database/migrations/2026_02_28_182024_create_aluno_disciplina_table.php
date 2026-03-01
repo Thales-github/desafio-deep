@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('aluno_disciplina', function (Blueprint $table) {
+        Schema::create('alunos_disciplinas', function (Blueprint $table) {
             // Chave primária
             $table->id();
 
             // Chaves estrangeiras
             $table->foreignId('aluno_id')
-                ->constrained('aluno')
+                ->constrained('alunos')
                 ->onDelete('cascade');
 
             $table->foreignId('disciplina_id')
-                ->constrained('disciplina')
+                ->constrained('disciplinas')
                 ->onDelete('cascade');
 
             $table->date('data_matricula')->nullable();
@@ -41,7 +41,7 @@ return new class extends Migration
             $table->index('status');
 
             // Garantir que um aluno não seja matriculado duas vezes na mesma disciplina
-            $table->unique(['aluno_id', 'disciplina_id'], 'aluno_disciplina_unique');
+            $table->unique(['aluno_id', 'disciplina_id'], 'alunos_disciplinas_unique');
         });
     }
 
