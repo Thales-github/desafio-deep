@@ -41,6 +41,11 @@ class Alunos extends Model
         $this->attributes['cep'] = $cep ? preg_replace('/[^0-9]/', '', $cep) : null;
     }
 
+    public function setTelefoneAttribute($telefone)
+    {
+        $this->attributes['telefone'] = $telefone ? preg_replace('/[^0-9]/', '', $telefone) : null;
+    }
+
     public function setLogradouroAttribute($logradouro)
     {
         $this->attributes['logradouro'] = $logradouro ? mb_convert_case(trim($logradouro), MB_CASE_UPPER, 'UTF-8') : null;

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Alunos;
+use App\Http\Controllers\Professores;
 
 Route::view('/', 'welcome')->name('home');
 
@@ -31,6 +32,30 @@ Route::prefix('alunos')->name('alunos.')->group(function () {
 
     // Apagar
     Route::delete('/apagar/{id}', [Alunos::class, 'apagar'])
+        ->whereNumber('id')
+        ->name('apagar');
+});
+
+Route::prefix('professores')->name('professores.')->group(function () {
+
+    // listar
+    Route::get('/listar', [Professores::class, 'listar'])->name('listar');
+
+    // Detalhar
+    Route::get('/detalhar/{id}', [Professores::class, 'detalhar'])
+        ->whereNumber('id')
+        ->name('detalhar');
+
+    // Cadastrar
+    Route::post('/cadastrar', [Professores::class, 'cadastrar'])->name('cadastrar');
+
+    // Atualizar
+    Route::put('/atualizar/{id}', [Professores::class, 'atualizar'])
+        ->whereNumber('id')
+        ->name('atualizar');
+
+    // Apagar
+    Route::delete('/apagar/{id}', [Professores::class, 'apagar'])
         ->whereNumber('id')
         ->name('apagar');
 });
