@@ -74,6 +74,7 @@ class AlunosDisciplinas extends Model
     {
 
         try {
+            // inner join para trazer dados do aluno e disciplina
             $query = $this->with(['aluno', 'disciplina']);
 
 
@@ -121,9 +122,10 @@ class AlunosDisciplinas extends Model
         }
     }
 
-    public function detalhar(int $id): ?self
+    public function detalhar(int $id): self
     {
-        return $this->with(['aluno', 'disciplina'])->findOrFail($id);
+        // inner join para trazer dados do aluno e disciplina
+        return self::with(['aluno', 'disciplina'])->findOrFail($id);
     }
 
     public function cadastrar(array $dados): self
