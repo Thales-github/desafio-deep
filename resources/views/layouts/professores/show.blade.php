@@ -561,10 +561,6 @@
              return new bootstrap.Tooltip(tooltipTriggerEl);
          });
 
-         // Gráfico de desempenho (se quiser adicionar)
-         @if(!empty($estatisticas))
-         // Código para gráfico se necessário
-         @endif
 
          // Função para confirmar ações
          window.confirmarAcao = function(titulo, mensagem, callback) {
