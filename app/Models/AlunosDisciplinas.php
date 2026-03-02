@@ -55,12 +55,6 @@ class AlunosDisciplinas extends Model
     ];
 
     /**
-     * ========================================================
-     * RELACIONAMENTOS
-     * ========================================================
-     */
-
-    /**
      * Relacionamento com Alunos
      */
     public function aluno(): BelongsTo
@@ -76,17 +70,9 @@ class AlunosDisciplinas extends Model
         return $this->belongsTo(Disciplinas::class, 'disciplina_id');
     }
 
-    /**
-     * ========================================================
-     * MÉTODOS DE CONSULTA
-     * ========================================================
-     */
-
-    /**
-     * Listar todas as matrículas com filtros opcionais
-     */
     public function listar(array $filtros = [])
     {
+
         try {
             $query = $this->with(['aluno', 'disciplina']);
 
@@ -128,62 +114,40 @@ class AlunosDisciplinas extends Model
 
             $resultados = $query->get();
 
-
-
             return $resultados;
         } catch (\Exception $e) {
 
             throw $e; // Relança para ser capturado no controller
         }
     }
-    /**
-     * Detalhar uma matrícula específica
-     */
+
     public function detalhar(int $id): ?self
     {
         return $this->with(['aluno', 'disciplina'])->findOrFail($id);
     }
 
-    /**
-     * Cadastrar nova matrícula
-     */
     public function cadastrar(array $dados): self
     {
         return $this->create($dados);
     }
 
-    /**
-     * Atualizar matrícula existente
-     */
     public function atualizar(array $dados): bool
     {
         return $this->update($dados);
     }
 
-    /**
-     * Apagar matrícula
-     */
     public function apagar(int $id): bool
     {
         $matricula = $this->findOrFail($id);
         return $matricula->delete();
     }
 
-    /**
-     * Buscar matrícula por aluno e disciplina
-     */
     public function buscarPorAlunoEDisciplina(int $alunoId, int $disciplinaId): ?self
     {
         return $this->where('aluno_id', $alunoId)
             ->where('disciplina_id', $disciplinaId)
             ->first();
     }
-
-    /**
-     * ========================================================
-     * ACCESSORS E MUTATORS
-     * ========================================================
-     */
 
     public function getStatusDescricaoAttribute(): string
     {

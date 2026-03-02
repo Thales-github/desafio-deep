@@ -98,6 +98,10 @@ class AlunosDisciplinas extends Controller
      */
     public function listar(Request $request): JsonResponse
     {
+
+        $validacoes = new Validacoes();
+        $alunosDisciplinasModel = new AlunosDisciplinasModel();
+
         try {
             // Captura todos os possíveis filtros da query string
             $filtros = [
@@ -131,6 +135,10 @@ class AlunosDisciplinas extends Controller
 
     public function detalhar(int $id): JsonResponse
     {
+
+        $validacoes = new Validacoes();
+        $alunosDisciplinasModel = new AlunosDisciplinasModel();
+
         try {
             $matricula = $alunosDisciplinasModel->detalhar($id);
 
@@ -150,6 +158,10 @@ class AlunosDisciplinas extends Controller
 
     public function atualizar(Request $request, int $id): JsonResponse
     {
+
+        $validacoes = new Validacoes();
+        $alunosDisciplinasModel = new AlunosDisciplinasModel();
+
         try {
             $matricula = $alunosDisciplinasModel->detalhar($id);
 
@@ -179,6 +191,10 @@ class AlunosDisciplinas extends Controller
 
     public function apagar(int $id): JsonResponse
     {
+
+        $validacoes = new Validacoes();
+        $alunosDisciplinasModel = new AlunosDisciplinasModel();
+
         try {
             $alunosDisciplinasModel->apagar($id);
 
@@ -198,6 +214,10 @@ class AlunosDisciplinas extends Controller
 
     public function matriculasPorAluno(int $alunoId): JsonResponse
     {
+
+        $validacoes = new Validacoes();
+        $alunosDisciplinasModel = new AlunosDisciplinasModel();
+
         try {
             $matriculas = $alunosDisciplinasModel
                 ->with('disciplina')
@@ -216,6 +236,10 @@ class AlunosDisciplinas extends Controller
 
     public function matriculasPorDisciplina(int $disciplinaId): JsonResponse
     {
+
+        $validacoes = new Validacoes();
+        $alunosDisciplinasModel = new AlunosDisciplinasModel();
+
         try {
             $matriculas = $alunosDisciplinasModel
                 ->with('aluno')
