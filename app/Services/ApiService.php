@@ -4,25 +4,21 @@
 namespace App\Services;
 
 use App\Http\Controllers\Alunos;
-use App\Http\Controllers\Professores;
-use App\Http\Controllers\Disciplinas;
-use App\Http\Controllers\AlunosDisciplinas;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class ApiService
 {
-    private function toArray($data)
+    private function toArray($dados)
     {
-        if (is_array($data)) {
-            return $data;
+        if (is_array($dados)) {
+            return $dados;
         }
 
-        if (is_object($data)) {
-            if (method_exists($data, 'toArray')) {
-                return $data->toArray();
+        if (is_object($dados)) {
+            if (method_exists($dados, 'toArray')) {
+                return $dados->toArray();
             }
-            return (array) $data;
+            return (array) $dados;
         }
 
         return [];
@@ -36,21 +32,19 @@ class ApiService
             $request = new Request();
             $response = $controller->listar($request);
 
-            $data = $this->toArray($response);
+            // ✅ CORREÇÃO: pegar o conteúdo JSON da resposta
+            $conteudo = $response->getData(true); // true = array associativo
 
-            // Se a resposta tiver uma chave 'data' com os alunos
-            if (isset($data['data']) && is_array($data['data'])) {
-                return $data['data'];
-            }
+            // DEBUG (pode remover depois)
+            // dd($conteudo);
 
-            // Se for um array direto de alunos
-            if (is_array($data)) {
-                return $data;
+            // Agora sim, verifica se tem 'dados'
+            if (isset($conteudo['dados']) && is_array($conteudo['dados'])) {
+                return $conteudo['dados'];
             }
 
             return [];
         } catch (\Exception $e) {
-            
             return [];
         }
     }
@@ -59,43 +53,44 @@ class ApiService
     {
         try {
             $controller = new Alunos();
-            $response = $controller->detalhar($id);
+            $request = new Request();
+            $response = $controller->detalhar($id); // Chama o método detalhar da API
 
-            $data = $this->toArray($response);
+            $dados = $response->getData(true);
 
-            if (isset($data['data'])) {
-                return $data['data'];
+            // A API retorna { "codigo":200, "dados": {...} }
+            if (isset($dados['dados']) && is_array($dados['dados'])) {
+                return $dados['dados'];
             }
 
-            return $data;
+            return [];
         } catch (\Exception $e) {
-            
-            return ['error' => $e->getMessage()];
+            return [];
         }
     }
 
-    public function createAluno($data)
+    public function createAluno($dados)
     {
         try {
             $controller = new Alunos();
-            $request = new Request($data);
+            $request = new Request($dados);
             $response = $controller->cadastrar($request);
             return $this->toArray($response);
         } catch (\Exception $e) {
-            
+
             return ['error' => $e->getMessage()];
         }
     }
 
-    public function updateAluno($id, $data)
+    public function updateAluno($id, $dados)
     {
         try {
             $controller = new Alunos();
-            $request = new Request($data);
+            $request = new Request($dados);
             $response = $controller->atualizar($request, $id);
             return $this->toArray($response);
         } catch (\Exception $e) {
-            
+
             return ['error' => $e->getMessage()];
         }
     }
@@ -107,7 +102,7 @@ class ApiService
             $response = $controller->apagar($id);
             return $this->toArray($response);
         } catch (\Exception $e) {
-            
+
             return ['error' => $e->getMessage()];
         }
     }

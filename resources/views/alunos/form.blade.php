@@ -34,12 +34,21 @@
                 </h5>
             </div>
             <div class="card-body">
+                @php
+                // Garantir que $aluno seja tratado corretamente
+                $alunoData = [];
+                if (isset($aluno)) {
+                $alunoData = is_array($aluno) ? $aluno : (array) $aluno;
+                }
+                $alunoId = $alunoData['id'] ?? $alunoData['ID'] ?? null;
+                @endphp
+
                 <form method="POST"
-                    action="{{ isset($aluno) ? route('alunos.update', $aluno['id']) : route('alunos.store') }}"
+                    action="{{ $alunoId ? route('alunos.update', $alunoId) : route('alunos.store') }}"
                     class="needs-validation"
                     novalidate>
                     @csrf
-                    @if(isset($aluno))
+                    @if($alunoId)
                     @method('PUT')
                     @endif
 
@@ -49,7 +58,7 @@
                             <i class="bi bi-person-badge"></i> Dados Pessoais
                         </h6>
                         <div class="row g-3">
-                            <div class="col-md-8">
+                            <div class="col-md-6">
                                 <label for="nome" class="form-label">Nome Completo *</label>
                                 <input type="text"
                                     class="form-control @error('nome') is-invalid @enderror"
@@ -62,20 +71,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-4">
-                                <label for="data_nascimento" class="form-label">Data Nascimento *</label>
-                                <input type="date"
-                                    class="form-control @error('data_nascimento') is-invalid @enderror"
-                                    id="data_nascimento"
-                                    name="data_nascimento"
-                                    value="{{ old('data_nascimento', $aluno['data_nascimento'] ?? '') }}"
-                                    required>
-                                @error('data_nascimento')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <label for="cpf" class="form-label">CPF *</label>
                                 <input type="text"
                                     class="form-control cpf-mask @error('cpf') is-invalid @enderror"
@@ -89,17 +85,21 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-4">
-                                <label for="rg" class="form-label">RG</label>
-                                <input type="text"
-                                    class="form-control"
-                                    id="rg"
-                                    name="rg"
-                                    value="{{ old('rg', $aluno['rg'] ?? '') }}">
+                            <div class="col-md-2">
+                                <label for="data_nascimento" class="form-label">Data Nascimento *</label>
+                                <input type="date"
+                                    class="form-control @error('data_nascimento') is-invalid @enderror"
+                                    id="data_nascimento"
+                                    name="data_nascimento"
+                                    value="{{ old('data_nascimento', $aluno['data_nascimento'] ?? '') }}"
+                                    required>
+                                @error('data_nascimento')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
-                            <div class="col-md-4">
-                                <label for="status" class="form-label">Status *</label>
+                            <div class="col-md-2">
+                                <label for="status" class="form-label">Situação *</label>
                                 <select class="form-select @error('status') is-invalid @enderror"
                                     id="status"
                                     name="status"
@@ -147,15 +147,6 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-3">
-                                <label for="celular" class="form-label">Celular</label>
-                                <input type="text"
-                                    class="form-control phone-mask"
-                                    id="celular"
-                                    name="celular"
-                                    value="{{ old('celular', $aluno['celular'] ?? '') }}"
-                                    maxlength="15">
-                            </div>
                         </div>
                     </div>
 
@@ -175,8 +166,8 @@
                                     maxlength="9">
                             </div>
 
-                            <div class="col-md-8">
-                                <label for="logradouro" class="form-label">Logradouro</label>
+                            <div class="col-md-4">
+                                <label for="logradouro" class="form-label">Endereço</label>
                                 <input type="text"
                                     class="form-control"
                                     id="logradouro"
@@ -184,25 +175,16 @@
                                     value="{{ old('logradouro', $aluno['logradouro'] ?? '') }}">
                             </div>
 
+                            <div class="col-md-4">
+                                <label for="cidade" class="form-label">Cidade</label>
+                                <input type="text"
+                                    class="form-control"
+                                    id="cidade"
+                                    name="cidade"
+                                    value="{{ old('cidade', $aluno['cidade'] ?? '') }}">
+                            </div>
+
                             <div class="col-md-2">
-                                <label for="numero" class="form-label">Número</label>
-                                <input type="text"
-                                    class="form-control"
-                                    id="numero"
-                                    name="numero"
-                                    value="{{ old('numero', $aluno['numero'] ?? '') }}">
-                            </div>
-
-                            <div class="col-md-5">
-                                <label for="complemento" class="form-label">Complemento</label>
-                                <input type="text"
-                                    class="form-control"
-                                    id="complemento"
-                                    name="complemento"
-                                    value="{{ old('complemento', $aluno['complemento'] ?? '') }}">
-                            </div>
-
-                            <div class="col-md-3">
                                 <label for="bairro" class="form-label">Bairro</label>
                                 <input type="text"
                                     class="form-control"
@@ -211,14 +193,6 @@
                                     value="{{ old('bairro', $aluno['bairro'] ?? '') }}">
                             </div>
 
-                            <div class="col-md-2">
-                                <label for="cidade" class="form-label">Cidade</label>
-                                <input type="text"
-                                    class="form-control"
-                                    id="cidade"
-                                    name="cidade"
-                                    value="{{ old('cidade', $aluno['cidade'] ?? '') }}">
-                            </div>
 
                             <div class="col-md-2">
                                 <label for="uf" class="form-label">UF</label>
@@ -252,40 +226,6 @@
                                     <option value="SE" {{ (old('uf', $aluno['uf'] ?? '') == 'SE') ? 'selected' : '' }}>SE</option>
                                     <option value="TO" {{ (old('uf', $aluno['uf'] ?? '') == 'TO') ? 'selected' : '' }}>TO</option>
                                 </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Informações Adicionais -->
-                    <div class="form-section">
-                        <h6 class="form-section-title">
-                            <i class="bi bi-info-circle"></i> Informações Adicionais
-                        </h6>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="nome_mae" class="form-label">Nome da Mãe</label>
-                                <input type="text"
-                                    class="form-control"
-                                    id="nome_mae"
-                                    name="nome_mae"
-                                    value="{{ old('nome_mae', $aluno['nome_mae'] ?? '') }}">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label for="nome_pai" class="form-label">Nome do Pai</label>
-                                <input type="text"
-                                    class="form-control"
-                                    id="nome_pai"
-                                    name="nome_pai"
-                                    value="{{ old('nome_pai', $aluno['nome_pai'] ?? '') }}">
-                            </div>
-
-                            <div class="col-12">
-                                <label for="observacoes" class="form-label">Observações</label>
-                                <textarea class="form-control"
-                                    id="observacoes"
-                                    name="observacoes"
-                                    rows="3">{{ old('observacoes', $aluno['observacoes'] ?? '') }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -346,20 +286,7 @@
 
         aplicarMascaras();
 
-        // Validação do formulário
-        (function() {
-            'use strict';
-            const forms = document.querySelectorAll('.needs-validation');
-            Array.from(forms).forEach(form => {
-                form.addEventListener('submit', event => {
-                    if (!form.checkValidity()) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                }, false);
-            });
-        })();
+
 
         // Buscar CEP
         $('#cep').on('blur', function() {

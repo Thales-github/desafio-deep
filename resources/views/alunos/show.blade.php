@@ -49,13 +49,13 @@
                                             </p>
                                             <p class="mb-1">
                                                 <i class="bi bi-card-text text-primary me-2"></i>
-                                                CPF: {{ $aluno['cpf'] }}
+                                                CPF: {{ $aluno['documento_unico'] }}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4 text-end">
-                                    @if($aluno['status'] == 'ativo')
+                                    @if($aluno['ativo'] == 'ativo')
                                     <span class="badge bg-success p-3">
                                         <i class="bi bi-check-circle"></i> ATIVO
                                     </span>
@@ -96,7 +96,7 @@
                                     </tr>
                                     <tr>
                                         <td class="text-muted">CPF:</td>
-                                        <td><strong>{{ $aluno['cpf'] }}</strong></td>
+                                        <td><strong>{{ $aluno['documento_unico'] }}</strong></td>
                                     </tr>
                                     <tr>
                                         <td class="text-muted">RG:</td>
@@ -105,7 +105,7 @@
                                     <tr>
                                         <td class="text-muted">Status:</td>
                                         <td>
-                                            @if($aluno['status'] == 'ativo')
+                                            @if($aluno['ativo'] == 'ativo')
                                             <span class="badge bg-success">Ativo</span>
                                             @else
                                             <span class="badge bg-danger">Inativo</span>
@@ -135,10 +135,7 @@
                                         <td class="text-muted">Telefone:</td>
                                         <td><strong>{{ $aluno['telefone'] }}</strong></td>
                                     </tr>
-                                    <tr>
-                                        <td class="text-muted">Celular:</td>
-                                        <td><strong>{{ $aluno['celular'] ?? 'Não informado' }}</strong></td>
-                                    </tr>
+
                                 </table>
                             </div>
                         </div>
@@ -158,7 +155,7 @@
                                     @if(!empty($aluno['logradouro']))
                                     <tr>
                                         <td width="40%" class="text-muted">Logradouro:</td>
-                                        <td><strong>{{ $aluno['logradouro'] }}, {{ $aluno['numero'] }}</strong></td>
+                                        <td><strong>{{ $aluno['logradouro'] }}</strong></td>
                                     </tr>
                                     @endif
                                     @if(!empty($aluno['complemento']))
@@ -237,7 +234,7 @@
                                 <h6 class="text-primary mb-0">
                                     <i class="bi bi-book me-2"></i>Disciplinas Matriculadas
                                 </h6>
-                                <a href="{{ route('aluno-disciplina.create', ['aluno_id' => $aluno['id']]) }}"
+                                <a href="{{ route('alunos-disciplinas.create', ['aluno_id' => $aluno['id']]) }}"
                                     class="btn btn-primary btn-sm">
                                     <i class="bi bi-plus-circle"></i> Nova Matrícula
                                 </a>
@@ -300,7 +297,7 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('aluno-disciplina.edit', $disciplina['pivot']['id'] ?? 0) }}"
+                                                    <a href="{{ route('alunos-disciplinas.edit', $disciplina['pivot']['id'] ?? 0) }}"
                                                         class="btn btn-sm btn-outline-warning"
                                                         title="Editar matrícula">
                                                         <i class="bi bi-pencil"></i>
@@ -321,7 +318,7 @@
                                 <div class="text-center py-4">
                                     <i class="bi bi-journal-x display-4 text-muted"></i>
                                     <p class="text-muted mt-2 mb-0">Aluno não possui disciplinas matriculadas</p>
-                                    <a href="{{ route('aluno-disciplina.create', ['aluno_id' => $aluno['id']]) }}"
+                                    <a href="{{ route('alunos-disciplinas.create', ['aluno_id' => $aluno['id']]) }}"
                                         class="btn btn-primary btn-sm mt-3">
                                         <i class="bi bi-plus-circle"></i> Matricular em Disciplina
                                     </a>
@@ -380,7 +377,7 @@
 <script>
     function confirmarRemocaoDisciplina(id, nome) {
         document.getElementById('disciplinaNome').textContent = nome;
-        document.getElementById('formRemoverDisciplina').action = `/aluno-disciplina/${id}`;
+        document.getElementById('formRemoverDisciplina').action = `/alunos-disciplinas/${id}`;
         new bootstrap.Modal(document.getElementById('modalRemoverDisciplina')).show();
     }
 </script>

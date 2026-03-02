@@ -1,6 +1,4 @@
 <?php
-// app/Http/Controllers/AlunoWebController.php
-
 namespace App\Http\Controllers;
 
 use App\Services\ApiService;
@@ -34,7 +32,7 @@ class AlunoWebController extends Controller
 
             return view('alunos.index', ['alunos' => $alunos]);
         } catch (\Exception $e) {
-            
+
             return view('alunos.index', ['alunos' => []])
                 ->with('error', 'Erro ao carregar alunos. Tente novamente.');
         }
@@ -57,7 +55,7 @@ class AlunoWebController extends Controller
 
             return back()->withErrors(['error' => 'Erro ao cadastrar aluno'])->withInput();
         } catch (\Exception $e) {
-            
+
             return back()->withErrors(['error' => 'Erro ao cadastrar aluno'])->withInput();
         }
     }
@@ -78,7 +76,7 @@ class AlunoWebController extends Controller
 
             return view('alunos.show', ['aluno' => $aluno]);
         } catch (\Exception $e) {
-            
+
             return redirect()->route('alunos.index')
                 ->with('error', 'Erro ao carregar dados do aluno');
         }
@@ -100,7 +98,7 @@ class AlunoWebController extends Controller
 
             return view('alunos.form', ['aluno' => $aluno]);
         } catch (\Exception $e) {
-            
+
             return redirect()->route('alunos.index')
                 ->with('error', 'Erro ao carregar dados do aluno');
         }
@@ -111,11 +109,18 @@ class AlunoWebController extends Controller
         try {
             $response = $this->api->updateAluno($id, $request->all());
 
-            return redirect()->route('alunos.index')
-                ->with('success', 'Aluno atualizado com sucesso!');
+            // ✅ Em vez de redirect, retorne JSON para o AJAX
+            return response()->json([
+                'success' => true,
+                'message' => 'Aluno atualizado com sucesso!',
+                'redirect' => route('alunos.index') // URL para redirecionar no front
+            ]);
         } catch (\Exception $e) {
-            
-            return back()->withErrors(['error' => 'Erro ao atualizar aluno'])->withInput();
+            return response()->json([
+                'success' => false,
+                'message' => 'Erro ao atualizar aluno',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 
@@ -127,7 +132,7 @@ class AlunoWebController extends Controller
             return redirect()->route('alunos.index')
                 ->with('success', 'Aluno excluído com sucesso!');
         } catch (\Exception $e) {
-            
+
             return redirect()->route('alunos.index')
                 ->with('error', 'Erro ao excluir aluno');
         }

@@ -128,12 +128,10 @@
                     </thead>
                     <tbody>
                         @forelse($alunos as $aluno)
-                        @php
-                        // Garantir que $aluno seja array
-                        $aluno = is_array($aluno) ? $aluno : (array) $aluno;
-                        @endphp
                         <tr>
+                            {{-- Use sintaxe de array com ?? para valores padrão --}}
                             <td><span class="badge bg-light text-dark">{{ $aluno['id'] ?? '#' }}</span></td>
+
                             <td>
                                 <div class="d-flex align-items-center">
                                     <div class="bg-primary bg-opacity-10 p-2 rounded-circle me-2">
@@ -142,18 +140,21 @@
                                     <strong>{{ $aluno['nome'] ?? 'N/A' }}</strong>
                                 </div>
                             </td>
+
                             <td>
                                 <a href="mailto:{{ $aluno['email'] ?? '' }}" class="text-decoration-none">
                                     <i class="bi bi-envelope me-1"></i>
                                     {{ $aluno['email'] ?? 'N/A' }}
                                 </a>
                             </td>
+
                             <td>
                                 <span class="text-muted">
                                     <i class="bi bi-card-text me-1"></i>
-                                    {{ $aluno['cpf'] ?? 'N/A' }}
+                                    {{ $aluno['documento_unico'] ?? $aluno['cpf'] ?? 'N/A' }}
                                 </span>
                             </td>
+
                             <td>
                                 @if(!empty($aluno['data_nascimento']))
                                 <span class="text-muted">
@@ -164,6 +165,7 @@
                                 <span class="text-muted">-</span>
                                 @endif
                             </td>
+
                             <td>
                                 @if(!empty($aluno['telefone']))
                                 <a href="tel:{{ $aluno['telefone'] }}" class="text-decoration-none">
@@ -174,6 +176,7 @@
                                 <span class="text-muted">-</span>
                                 @endif
                             </td>
+
                             <td>
                                 @if(($aluno['status'] ?? '') === 'ativo')
                                 <span class="badge bg-success">
@@ -185,6 +188,7 @@
                                 </span>
                                 @endif
                             </td>
+
                             <td class="table-actions">
                                 <div class="btn-group" role="group">
                                     <a href="{{ route('alunos.show', $aluno['id'] ?? 0) }}"
@@ -242,7 +246,7 @@
                                 <span class="d-block fs-4 fw-bold text-success">
                                     {{ collect($alunos)->filter(function($a) { 
                                         $a = is_array($a) ? $a : (array) $a;
-                                        return ($a['status'] ?? '') === 'ativo'; 
+                                        return ($a->status ?? '') === 'ativo'; 
                                     })->count() }}
                                 </span>
                                 <small class="text-muted">Alunos Ativos</small>
@@ -251,7 +255,7 @@
                                 <span class="d-block fs-4 fw-bold text-danger">
                                     {{ collect($alunos)->filter(function($a) { 
                                         $a = is_array($a) ? $a : (array) $a;
-                                        return ($a['status'] ?? '') === 'inativo'; 
+                                        return ($a->status ?? '') === 'inativo'; 
                                     })->count() }}
                                 </span>
                                 <small class="text-muted">Alunos Inativos</small>
@@ -313,33 +317,37 @@
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
 
+        if ($.fn.DataTable.isDataTable('#alunosTable')) {
+            $('#alunosTable').DataTable().destroy();
+        }
+
         // Inicializar DataTable
-        $('#alunosTable').DataTable({
-            language: {
-                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json'
-            },
-            order: [
-                [1, 'asc']
-            ],
-            pageLength: 10,
-            lengthMenu: [
-                [10, 25, 50, -1],
-                [10, 25, 50, "Todos"]
-            ],
-            columnDefs: [{
-                orderable: false,
-                targets: 7
-            }],
-            initComplete: function() {
-                // Adicionar classe para melhor aparência
-                this.api().columns().every(function() {
-                    var column = this;
-                    if (column.header().innerText === 'Status') {
-                        // Filtro customizado para status
-                    }
-                });
-            }
-        });
+        // $('#alunosTable').DataTable({
+        //     language: {
+        //         url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json'
+        //     },
+        //     order: [
+        //         [1, 'asc']
+        //     ],
+        //     pageLength: 10,
+        //     lengthMenu: [
+        //         [10, 25, 50, -1],
+        //         [10, 25, 50, "Todos"]
+        //     ],
+        //     columnDefs: [{
+        //         orderable: false,
+        //         targets: 7
+        //     }],
+        //     initComplete: function() {
+        //         // Adicionar classe para melhor aparência
+        //         this.api().columns().every(function() {
+        //             var column = this;
+        //             if (column.header().innerText === 'Status') {
+        //                 // Filtro customizado para status
+        //             }
+        //         });
+        //     }
+        // });
 
         // Modal de exclusão
         $('.btn-delete').on('click', function() {

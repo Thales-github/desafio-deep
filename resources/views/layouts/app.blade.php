@@ -1,10 +1,3 @@
-<!-- <x-layouts::app.sidebar :title="$title ?? null">
-    <flux:main>
-        {{ $slot }}
-    </flux:main>
-</x-layouts::app.sidebar> -->
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -42,12 +35,6 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('alunos.index') }}">Alunos</a></li>
-                            <li><a class="dropdown-item" href="{{ route('professores.index') }}">Professores</a></li>
-                            <li><a class="dropdown-item" href="{{ route('disciplinas.index') }}">Disciplinas</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="{{ route('alunos-disciplinas.index') }}">Matrículas</a></li>
                         </ul>
                     </li>
                 </ul>
