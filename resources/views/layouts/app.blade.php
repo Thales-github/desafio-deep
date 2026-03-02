@@ -25,9 +25,10 @@
 </head>
 
 <body>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('dashboard') }}">
+            <a class="navbar-brand" href="{{ route('alunos.index') }}">
                 <i class="bi bi-mortarboard"></i> Sistema Escolar
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -46,7 +47,7 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="{{ route('aluno-disciplina.index') }}">Matrículas</a></li>
+                            <li><a class="dropdown-item" href="{{ route('alunos-disciplinas.index') }}">Matrículas</a></li>
                         </ul>
                     </li>
                 </ul>
