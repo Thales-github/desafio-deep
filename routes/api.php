@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Alunos;
 use App\Http\Controllers\Disciplinas;
 use App\Http\Controllers\Professores;
+use App\Http\Controllers\AlunosDisciplinas;
 
 Route::view('/', 'welcome')->name('home');
 
@@ -83,4 +84,23 @@ Route::prefix('disciplinas')->name('disciplinas.')->group(function () {
     Route::delete('/apagar/{id}', [Disciplinas::class, 'apagar'])
         ->whereNumber('id')
         ->name('apagar');
+});
+
+Route::prefix('alunos-disciplinas')->name('alunos-disciplinas.')->group(function () {
+
+    Route::get('/listar', [AlunosDisciplinas::class, 'listar'])->name('alunos-disciplinas.listar');
+
+    Route::post('/cadastrar', [AlunosDisciplinas::class, 'cadastrar'])->name('alunos-disciplinas.cadastrar');
+
+    Route::get('/detalhar/{id}', [AlunosDisciplinas::class, 'detalhar'])
+        ->whereNumber('id')
+        ->name('alunos-disciplinas.detalhar');
+
+    Route::put('/atualizar/{id}', [AlunosDisciplinas::class, 'atualizar'])
+        ->whereNumber('id')
+        ->name('alunos-disciplinas.atualizar');
+
+    Route::delete('/apagar/{id}', [AlunosDisciplinas::class, 'apagar'])
+        ->whereNumber('id')
+        ->name('alunos-disciplinas.apagar');
 });
