@@ -50,40 +50,50 @@ class AlunoWebController extends Controller
         return view('alunos.form');
     }
 
-    public function store(Request $request)
-    {
-        try {
-            $response = $this->api->createAluno($request->all());
+   public function store(Request $request)
+{
+    try {
+        $response = $this->api->createAluno($request->all());
 
-            // Se não tiver 'codigo', mostra o que veio
-            if (!isset($response['codigo'])) {
-                return back()->withErrors([
-                    'error' => 'Resposta inválida da API'
-                ])->withInput();
-            }
-
-            // Sucesso (código 201)
-            if ($response['codigo'] == 201) {
-                return redirect()->route('alunos.index')
-                    ->with('success', 'Aluno cadastrado com sucesso!');
-            }
-
-            // Erro de validação (422)
-            if ($response['codigo'] == 422) {
-                $erros = $response['dados']['erros'] ?? [];
-
-                // 🔴 Log para ver os erros
-                // \Log::info('Erros de validação:', $erros);
-
-                // Retorna com os erros para o formulário
-                return back()->withErrors($erros)->withInput();
-            }
-
-            return back()->withErrors(['error' => 'Erro ao cadastrar aluno'])->withInput();
-        } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'Erro ao cadastrar aluno: ' . $e->getMessage()])->withInput();
+        if (!isset($response['codigo'])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Resposta inválida da API'
+            ], 500);
         }
+
+        // Sucesso (código 201)
+        if ($response['codigo'] == 201) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Aluno cadastrado com sucesso!',
+                'redirect' => route('alunos.index')
+            ]);
+        }
+
+        // Erro de validação (422)
+        if ($response['codigo'] == 422) {
+            $erros = $response['dados']['erros'] ?? [];
+            
+            return response()->json([
+                'success' => false,
+                'message' => $response['mensagem'] ?? 'Erro na validação',
+                'errors' => $erros
+            ], 422);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Erro ao cadastrar aluno'
+        ], 400);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Erro ao cadastrar aluno: ' . $e->getMessage()
+        ], 500);
     }
+}
 
     public function update(Request $request, $id)
     {

@@ -258,35 +258,61 @@
                         window.location.href = response.redirect;
                     }
                 },
+                // error: function(xhr) {
+
+                //     console.log(xhr.responseJSON);
+
+                //     // Tenta extrair a mensagem de erro
+                //     let errorMsg = 'Erro ao atualizar aluno';
+
+                //     if (xhr.responseJSON) {
+                //         // Se a API retornar JSON com erros de validação
+                //         if (xhr.responseJSON.dados && xhr.responseJSON.dados.erros) {
+                //             // Concatena todos os erros
+                //             const erros = xhr.responseJSON.dados.erros;
+                //             errorMsg = Object.values(erros).flat().join('\n');
+                //         } else if (xhr.responseJSON.message) {
+                //             errorMsg = xhr.responseJSON.message;
+                //         }
+                //     } else if (xhr.responseText) {
+                //         // Tenta parsear o responseText
+                //         try {
+                //             const data = JSON.parse(xhr.responseText);
+                //             if (data.dados && data.dados.erros) {
+                //                 errorMsg = Object.values(data.dados.erros).flat().join('\n');
+                //             }
+                //         } catch (e) {
+                //             errorMsg = xhr.responseText;
+                //         }
+                //     }
+
+                //     alert('Erro de validação:\n' + errorMsg);
+                // }
                 error: function(xhr) {
-
-                    console.log(xhr.responseJSON);
-
-                    // Tenta extrair a mensagem de erro
-                    let errorMsg = 'Erro ao atualizar aluno';
+                    let errorMsg = 'Erro ao cadastrar aluno';
+                    let errors = {};
 
                     if (xhr.responseJSON) {
-                        // Se a API retornar JSON com erros de validação
-                        if (xhr.responseJSON.dados && xhr.responseJSON.dados.erros) {
-                            // Concatena todos os erros
-                            const erros = xhr.responseJSON.dados.erros;
-                            errorMsg = Object.values(erros).flat().join('\n');
+                        if (xhr.responseJSON.errors) {
+                            errors = xhr.responseJSON.errors;
+                            errorMsg = Object.values(errors).flat().join('\n');
                         } else if (xhr.responseJSON.message) {
                             errorMsg = xhr.responseJSON.message;
-                        }
-                    } else if (xhr.responseText) {
-                        // Tenta parsear o responseText
-                        try {
-                            const data = JSON.parse(xhr.responseText);
-                            if (data.dados && data.dados.erros) {
-                                errorMsg = Object.values(data.dados.erros).flat().join('\n');
-                            }
-                        } catch (e) {
-                            errorMsg = xhr.responseText;
                         }
                     }
 
                     alert('Erro de validação:\n' + errorMsg);
+
+                    // Limpar erros anteriores
+                    $('.is-invalid').removeClass('is-invalid');
+                    $('.invalid-feedback').remove();
+
+                    // Adicionar erros nos campos
+                    Object.keys(errors).forEach(function(field) {
+                        var input = $('[name="' + field + '"]');
+                        input.addClass('is-invalid');
+                        input.after('<div class="invalid-feedback">' + errors[field].join(', ') + '</div>');
+                    });
                 }
             });
         });
