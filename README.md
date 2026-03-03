@@ -58,6 +58,6 @@ docker compose up -d
 
 php artisan migrate
 
-#### 4.acessar a aplicação web
+#### 6.acessar a aplicação web
 
 http://localhost:8000/alunos
