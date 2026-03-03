@@ -130,7 +130,7 @@
                         @forelse($alunos as $aluno)
                         <tr>
                             {{-- Use sintaxe de array com ?? para valores padrão --}}
-                            <td><span class="badge bg-light text-dark">{{ $aluno['id'] ?? '#' }}</span></td>
+                            <td><span class="badge bg-light text-dark">{{ $aluno['id'] }}</span></td>
 
                             <td>
                                 <div class="d-flex align-items-center">
@@ -142,16 +142,16 @@
                             </td>
 
                             <td>
-                                <a href="mailto:{{ $aluno['email'] ?? '' }}" class="text-decoration-none">
+                                <span href="mailto:{{ $aluno['email'] ?? '' }}" class="text-decoration-none">
                                     <i class="bi bi-envelope me-1"></i>
                                     {{ $aluno['email'] ?? 'N/A' }}
-                                </a>
+                                </span>
                             </td>
 
                             <td>
                                 <span class="text-muted">
                                     <i class="bi bi-card-text me-1"></i>
-                                    {{ $aluno['documento_unico'] ?? $aluno['cpf'] ?? 'N/A' }}
+                                    {{ $aluno['documento_unico'] ?? 'N/A' }}
                                 </span>
                             </td>
 
@@ -191,12 +191,7 @@
 
                             <td class="table-actions">
                                 <div class="btn-group" role="group">
-                                    <a href="{{ route('alunos.show', $aluno['id'] ?? 0) }}"
-                                        class="btn btn-sm btn-info"
-                                        title="Visualizar"
-                                        data-bs-toggle="tooltip">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
+
                                     <a href="{{ route('alunos.edit', $aluno['id'] ?? 0) }}"
                                         class="btn btn-sm btn-warning"
                                         title="Editar"
@@ -246,7 +241,7 @@
                                 <span class="d-block fs-4 fw-bold text-success">
                                     {{ collect($alunos)->filter(function($a) { 
                                         $a = is_array($a) ? $a : (array) $a;
-                                        return ($a->status ?? '') === 'ativo'; 
+                                        return ($a->ativo ?? '') === 1; 
                                     })->count() }}
                                 </span>
                                 <small class="text-muted">Alunos Ativos</small>
@@ -255,7 +250,7 @@
                                 <span class="d-block fs-4 fw-bold text-danger">
                                     {{ collect($alunos)->filter(function($a) { 
                                         $a = is_array($a) ? $a : (array) $a;
-                                        return ($a->status ?? '') === 'inativo'; 
+                                        return ($a->ativo ?? '') === 0; 
                                     })->count() }}
                                 </span>
                                 <small class="text-muted">Alunos Inativos</small>

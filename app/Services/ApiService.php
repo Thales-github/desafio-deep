@@ -84,13 +84,19 @@ class ApiService
 
     public function updateAluno($id, $dados)
     {
+
         try {
+            
             $controller = new Alunos();
-            $request = new Request($dados);
+
+            $request = new Request();
+            $request->merge($dados); // Adiciona os dados ao request
+
+            $request->headers->set('Content-Type', 'application/json');
             $response = $controller->atualizar($request, $id);
+
             return $this->toArray($response);
         } catch (\Exception $e) {
-
             return ['error' => $e->getMessage()];
         }
     }

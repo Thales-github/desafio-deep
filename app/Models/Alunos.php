@@ -76,6 +76,7 @@ class Alunos extends Model
             'email',
             'ativo',
             'telefone',
+            'data_nascimento',
             'uf',
         ]);
     }

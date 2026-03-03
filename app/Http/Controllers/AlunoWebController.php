@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Services\ApiService;
@@ -106,14 +107,26 @@ class AlunoWebController extends Controller
 
     public function update(Request $request, $id)
     {
+
         try {
+
             $response = $this->api->updateAluno($id, $request->all());
 
-            // ✅ Em vez de redirect, retorne JSON para o AJAX
+            // dd($response);
+            // die();
+
+            if (isset($response['codigo']) && $response['codigo'] != 200) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $response['mensagem'] ?? 'Erro na validação',
+                    'errors' => $response['dados']['erros'] ?? []
+                ], $response['codigo'] ?? 422);
+            }
+
             return response()->json([
                 'success' => true,
                 'message' => 'Aluno atualizado com sucesso!',
-                'redirect' => route('alunos.index') // URL para redirecionar no front
+                'redirect' => route('alunos.index')
             ]);
         } catch (\Exception $e) {
             return response()->json([

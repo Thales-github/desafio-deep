@@ -72,15 +72,15 @@
                             </div>
 
                             <div class="col-md-2">
-                                <label for="cpf" class="form-label">CPF *</label>
+                                <label for="documento_unico" class="form-label">CPF *</label>
                                 <input type="text"
-                                    class="form-control cpf-mask @error('cpf') is-invalid @enderror"
-                                    id="cpf"
-                                    name="cpf"
-                                    value="{{ old('cpf', $aluno['cpf'] ?? '') }}"
+                                    class="form-control documento_unico-mask @error('documento_unico') is-invalid @enderror"
+                                    id="documento_unico"
+                                    name="documento_unico"
+                                    value="{{ old('documento_unico', $aluno['documento_unico'] ?? '') }}"
                                     maxlength="14"
                                     required>
-                                @error('cpf')
+                                @error('documento_unico')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -249,9 +249,54 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
+
+
+        $('form').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: 'POST',
+                data: $(this).serialize(),
+                success: function(response) {
+                    if (response.success) {
+                        window.location.href = response.redirect;
+                    }
+                },
+                error: function(xhr) {
+
+                    // Tenta extrair a mensagem de erro
+                    let errorMsg = 'Erro ao atualizar aluno';
+
+                    if (xhr.responseJSON) {
+                        // Se a API retornar JSON com erros de validação
+                        if (xhr.responseJSON.dados && xhr.responseJSON.dados.erros) {
+                            // Concatena todos os erros
+                            const erros = xhr.responseJSON.dados.erros;
+                            errorMsg = Object.values(erros).flat().join('\n');
+                        } else if (xhr.responseJSON.message) {
+                            errorMsg = xhr.responseJSON.message;
+                        }
+                    } else if (xhr.responseText) {
+                        // Tenta parsear o responseText
+                        try {
+                            const data = JSON.parse(xhr.responseText);
+                            if (data.dados && data.dados.erros) {
+                                errorMsg = Object.values(data.dados.erros).flat().join('\n');
+                            }
+                        } catch (e) {
+                            errorMsg = xhr.responseText;
+                        }
+                    }
+
+                    alert('Erro de validação:\n' + errorMsg);
+                }
+            });
+        });
+
         // Máscaras
         function aplicarMascaras() {
-            $('.cpf-mask').on('input', function() {
+            $('.documento_unico-mask').on('input', function() {
                 let value = $(this).val().replace(/\D/g, '');
                 if (value.length <= 11) {
                     value = value.replace(/(\d{3})(\d)/, '$1.$2');
