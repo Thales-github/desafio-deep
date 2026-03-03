@@ -54,6 +54,9 @@ composer run dev
 #### 4.Subir contêiner Docker
 
 docker compose up -d
+#### 5.Executar as migrations do banco de dados
+
+php artisan migrate
 
 #### 4.acessar a aplicação web
 
