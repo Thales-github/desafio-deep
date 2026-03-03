@@ -43,5 +43,5 @@ Este projeto é uma aplicação web completa para gerenciamento de alunos, com u
 
 #### 1. Clone o repositório
 ```bash
-git clone https://github.com/seu-usuario/desafio-deep.git
+git clone https://github.com/Thales-github/desafio-deep
 cd desafio-deep
