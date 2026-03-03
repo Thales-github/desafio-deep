@@ -55,19 +55,15 @@ class AlunoWebController extends Controller
         try {
             $response = $this->api->createAluno($request->all());
 
-            // 🔴 DEBUG: veja exatamente o que a API retornou
-            \Log::info('STORE - Resposta completa:', $response);
-
             // Se não tiver 'codigo', mostra o que veio
             if (!isset($response['codigo'])) {
                 return back()->withErrors([
-                    'error' => 'Resposta inválida da API',
-                    'debug' => json_encode($response)
+                    'error' => 'Resposta inválida da API'
                 ])->withInput();
             }
 
-            // Sucesso (pode ser 201 ou 200)
-            if ($response['codigo'] == 201 || $response['codigo'] == 200) {
+            // Sucesso (código 201)
+            if ($response['codigo'] == 201) {
                 return redirect()->route('alunos.index')
                     ->with('success', 'Aluno cadastrado com sucesso!');
             }
@@ -75,6 +71,11 @@ class AlunoWebController extends Controller
             // Erro de validação (422)
             if ($response['codigo'] == 422) {
                 $erros = $response['dados']['erros'] ?? [];
+
+                // 🔴 Log para ver os erros
+                // \Log::info('Erros de validação:', $erros);
+
+                // Retorna com os erros para o formulário
                 return back()->withErrors($erros)->withInput();
             }
 
@@ -87,20 +88,20 @@ class AlunoWebController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            \Log::info('5️⃣ update WEB iniciado', [
-                'id' => $id,
-                'dados_form' => $request->all()
-            ]);
+            // \Log::info('5️⃣ update WEB iniciado', [
+            //     'id' => $id,
+            //     'dados_form' => $request->all()
+            // ]);
 
             $response = $this->api->updateAluno($id, $request->all());
 
-            \Log::info('6️⃣ Resposta FINAL recebida no WebController', [
-                'response' => $response
-            ]);
+            // \Log::info('6️⃣ Resposta FINAL recebida no WebController', [
+            //     'response' => $response
+            // ]);
 
             // Sucesso (200)
             if (isset($response['codigo']) && $response['codigo'] == 200) {
-                \Log::info('7️⃣ ✅ Sucesso na atualização');
+                // \Log::info('7️⃣ ✅ Sucesso na atualização');
                 return response()->json([
                     'success' => true,
                     'message' => 'Aluno atualizado com sucesso!',
@@ -110,7 +111,7 @@ class AlunoWebController extends Controller
 
             // Erro de validação (422)
             if (isset($response['codigo']) && $response['codigo'] == 422) {
-                \Log::warning('8️⃣ ⚠️ Erro de validação', $response);
+                // \Log::warning('8️⃣ ⚠️ Erro de validação', $response);
                 return response()->json([
                     'success' => false,
                     'message' => $response['mensagem'] ?? 'Erro na validação',
@@ -119,7 +120,7 @@ class AlunoWebController extends Controller
             }
 
             // Outros erros
-            \Log::warning('9️⃣ ⚠️ Outro tipo de erro', $response);
+            // \Log::warning('9️⃣ ⚠️ Outro tipo de erro', $response);
             return response()->json([
                 'success' => false,
                 'message' => $response['mensagem'] ?? 'Erro ao atualizar aluno'

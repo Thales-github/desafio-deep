@@ -229,24 +229,6 @@
                                 <span class="d-block fs-4 fw-bold text-primary">{{ count($alunos) }}</span>
                                 <small class="text-muted">Total de Alunos</small>
                             </div>
-                            <div class="col-md-4">
-                                <span class="d-block fs-4 fw-bold text-success">
-                                    {{ collect($alunos)->filter(function($a) { 
-                                        $a = is_array($a) ? $a : (array) $a;
-                                        return ($a->ativo ?? '') === 1; 
-                                    })->count() }}
-                                </span>
-                                <small class="text-muted">Alunos Ativos</small>
-                            </div>
-                            <div class="col-md-4">
-                                <span class="d-block fs-4 fw-bold text-danger">
-                                    {{ collect($alunos)->filter(function($a) { 
-                                        $a = is_array($a) ? $a : (array) $a;
-                                        return ($a->ativo ?? '') === 0; 
-                                    })->count() }}
-                                </span>
-                                <small class="text-muted">Alunos Inativos</small>
-                            </div>
                         </div>
                     </div>
                 </div>
