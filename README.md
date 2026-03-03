@@ -41,7 +41,7 @@ Este projeto é uma aplicação web completa para gerenciamento de alunos, com u
 
 ```bash
 
-#### 2. Clonar o repositório
+#### 1. Clonar o repositório
 git clone https://github.com/Thales-github/desafio-deep
 
 #### 2. Acessar diretório
