@@ -1,10 +1,10 @@
 <?php
-// app/Services/ApiService.php
 
 namespace App\Services;
 
 use App\Http\Controllers\Alunos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ApiService
 {
@@ -71,31 +71,42 @@ class ApiService
 
     public function createAluno($dados)
     {
-        try {
-            $controller = new Alunos();
-            $request = new Request($dados);
-            $response = $controller->cadastrar($request);
-            return $this->toArray($response);
-        } catch (\Exception $e) {
 
+        try {
+
+            $controller = new Alunos();
+            $request = new Request();
+            $request->merge($dados);
+
+            $response = $controller->cadastrar($request);
+
+            // Converte para array
+            $conteudo = $response->getData(true);
+
+            return $conteudo;
+        } catch (\Exception $e) {
             return ['error' => $e->getMessage()];
         }
     }
 
     public function updateAluno($id, $dados)
     {
-
         try {
-            
+            // \Log::info('1️⃣ updateAluno INICIADO', ['id' => $id, 'dados_recebidos' => $dados]);
+
             $controller = new Alunos();
-
             $request = new Request();
-            $request->merge($dados); // Adiciona os dados ao request
-
+            $request->merge($dados);
             $request->headers->set('Content-Type', 'application/json');
+
             $response = $controller->atualizar($request, $id);
 
-            return $this->toArray($response);
+            $conteudo = $response->getData(true); // Pega o JSON como array
+
+            // \Log::info('4️⃣ Conteúdo processado CORRETAMENTE', ['conteudo' => $conteudo]);
+
+            return $conteudo; // Agora retorna o array correto com 'codigo', 'mensagem', 'dados'
+
         } catch (\Exception $e) {
             return ['error' => $e->getMessage()];
         }

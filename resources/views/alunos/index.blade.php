@@ -119,7 +119,6 @@
                             <th width="50">ID</th>
                             <th>Nome</th>
                             <th>E-mail</th>
-                            <th>CPF</th>
                             <th>Data Nasc.</th>
                             <th>Telefone</th>
                             <th width="100">Status</th>
@@ -142,16 +141,9 @@
                             </td>
 
                             <td>
-                                <span href="mailto:{{ $aluno['email'] ?? '' }}" class="text-decoration-none">
+                                <span class="text-decoration-none">
                                     <i class="bi bi-envelope me-1"></i>
                                     {{ $aluno['email'] ?? 'N/A' }}
-                                </span>
-                            </td>
-
-                            <td>
-                                <span class="text-muted">
-                                    <i class="bi bi-card-text me-1"></i>
-                                    {{ $aluno['documento_unico'] ?? 'N/A' }}
                                 </span>
                             </td>
 
@@ -168,17 +160,17 @@
 
                             <td>
                                 @if(!empty($aluno['telefone']))
-                                <a href="tel:{{ $aluno['telefone'] }}" class="text-decoration-none">
+                                <span class="text-decoration-none">
                                     <i class="bi bi-telephone me-1"></i>
                                     {{ $aluno['telefone'] }}
-                                </a>
+                                </span>
                                 @else
                                 <span class="text-muted">-</span>
                                 @endif
                             </td>
 
                             <td>
-                                @if(($aluno['status'] ?? '') === 'ativo')
+                                @if(($aluno['ativo'] ?? 0) == 1)
                                 <span class="badge bg-success">
                                     <i class="bi bi-check-circle me-1"></i>Ativo
                                 </span>
@@ -317,32 +309,32 @@
         }
 
         // Inicializar DataTable
-        // $('#alunosTable').DataTable({
-        //     language: {
-        //         url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json'
-        //     },
-        //     order: [
-        //         [1, 'asc']
-        //     ],
-        //     pageLength: 10,
-        //     lengthMenu: [
-        //         [10, 25, 50, -1],
-        //         [10, 25, 50, "Todos"]
-        //     ],
-        //     columnDefs: [{
-        //         orderable: false,
-        //         targets: 7
-        //     }],
-        //     initComplete: function() {
-        //         // Adicionar classe para melhor aparência
-        //         this.api().columns().every(function() {
-        //             var column = this;
-        //             if (column.header().innerText === 'Status') {
-        //                 // Filtro customizado para status
-        //             }
-        //         });
-        //     }
-        // });
+        $('#alunosTable').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json'
+            },
+            order: [
+                [1, 'asc']
+            ],
+            pageLength: 10,
+            lengthMenu: [
+                [10, 25, 50, -1],
+                [10, 25, 50, "Todos"]
+            ],
+            columnDefs: [{
+                orderable: false,
+                targets: 6
+            }],
+            initComplete: function() {
+                // Adicionar classe para melhor aparência
+                this.api().columns().every(function() {
+                    var column = this;
+                    if (column.header().innerText === 'Status') {
+                        // Filtro customizado para status
+                    }
+                });
+            }
+        });
 
         // Modal de exclusão
         $('.btn-delete').on('click', function() {

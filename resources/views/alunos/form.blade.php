@@ -166,7 +166,7 @@
                                     maxlength="9">
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <label for="logradouro" class="form-label">Endereço</label>
                                 <input type="text"
                                     class="form-control"
@@ -175,16 +175,7 @@
                                     value="{{ old('logradouro', $aluno['logradouro'] ?? '') }}">
                             </div>
 
-                            <div class="col-md-4">
-                                <label for="cidade" class="form-label">Cidade</label>
-                                <input type="text"
-                                    class="form-control"
-                                    id="cidade"
-                                    name="cidade"
-                                    value="{{ old('cidade', $aluno['cidade'] ?? '') }}">
-                            </div>
-
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <label for="bairro" class="form-label">Bairro</label>
                                 <input type="text"
                                     class="form-control"
@@ -250,7 +241,6 @@
 <script>
     $(document).ready(function() {
 
-
         $('form').on('submit', function(e) {
             e.preventDefault();
 
@@ -258,12 +248,19 @@
                 url: $(this).attr('action'),
                 method: 'POST',
                 data: $(this).serialize(),
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': $('input[name="_token"]').val()
+                },
                 success: function(response) {
                     if (response.success) {
                         window.location.href = response.redirect;
                     }
                 },
                 error: function(xhr) {
+
+                    console.log(xhr.responseJSON);
 
                     // Tenta extrair a mensagem de erro
                     let errorMsg = 'Erro ao atualizar aluno';

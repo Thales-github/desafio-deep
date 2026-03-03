@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Services\ApiService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
 
 class AlunoWebController extends Controller
 {
@@ -18,6 +20,10 @@ class AlunoWebController extends Controller
     {
         try {
             $alunos = $this->api->getAlunos();
+
+
+            // dd($alunos);
+            // die();
 
             // Garantir que $alunos seja um array de arrays
             if (!is_array($alunos)) {
@@ -49,15 +55,82 @@ class AlunoWebController extends Controller
         try {
             $response = $this->api->createAluno($request->all());
 
-            if (isset($response['id']) || isset($response['success'])) {
+            // 🔴 DEBUG: veja exatamente o que a API retornou
+            \Log::info('STORE - Resposta completa:', $response);
+
+            // Se não tiver 'codigo', mostra o que veio
+            if (!isset($response['codigo'])) {
+                return back()->withErrors([
+                    'error' => 'Resposta inválida da API',
+                    'debug' => json_encode($response)
+                ])->withInput();
+            }
+
+            // Sucesso (pode ser 201 ou 200)
+            if ($response['codigo'] == 201 || $response['codigo'] == 200) {
                 return redirect()->route('alunos.index')
                     ->with('success', 'Aluno cadastrado com sucesso!');
             }
 
-            return back()->withErrors(['error' => 'Erro ao cadastrar aluno'])->withInput();
-        } catch (\Exception $e) {
+            // Erro de validação (422)
+            if ($response['codigo'] == 422) {
+                $erros = $response['dados']['erros'] ?? [];
+                return back()->withErrors($erros)->withInput();
+            }
 
             return back()->withErrors(['error' => 'Erro ao cadastrar aluno'])->withInput();
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Erro ao cadastrar aluno: ' . $e->getMessage()])->withInput();
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            \Log::info('5️⃣ update WEB iniciado', [
+                'id' => $id,
+                'dados_form' => $request->all()
+            ]);
+
+            $response = $this->api->updateAluno($id, $request->all());
+
+            \Log::info('6️⃣ Resposta FINAL recebida no WebController', [
+                'response' => $response
+            ]);
+
+            // Sucesso (200)
+            if (isset($response['codigo']) && $response['codigo'] == 200) {
+                \Log::info('7️⃣ ✅ Sucesso na atualização');
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Aluno atualizado com sucesso!',
+                    'redirect' => route('alunos.index')
+                ]);
+            }
+
+            // Erro de validação (422)
+            if (isset($response['codigo']) && $response['codigo'] == 422) {
+                \Log::warning('8️⃣ ⚠️ Erro de validação', $response);
+                return response()->json([
+                    'success' => false,
+                    'message' => $response['mensagem'] ?? 'Erro na validação',
+                    'errors' => $response['dados']['erros'] ?? []
+                ], 422);
+            }
+
+            // Outros erros
+            \Log::warning('9️⃣ ⚠️ Outro tipo de erro', $response);
+            return response()->json([
+                'success' => false,
+                'message' => $response['mensagem'] ?? 'Erro ao atualizar aluno'
+            ], $response['codigo'] ?? 400);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Erro ao atualizar aluno',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 
@@ -102,38 +175,6 @@ class AlunoWebController extends Controller
 
             return redirect()->route('alunos.index')
                 ->with('error', 'Erro ao carregar dados do aluno');
-        }
-    }
-
-    public function update(Request $request, $id)
-    {
-
-        try {
-
-            $response = $this->api->updateAluno($id, $request->all());
-
-            // dd($response);
-            // die();
-
-            if (isset($response['codigo']) && $response['codigo'] != 200) {
-                return response()->json([
-                    'success' => false,
-                    'message' => $response['mensagem'] ?? 'Erro na validação',
-                    'errors' => $response['dados']['erros'] ?? []
-                ], $response['codigo'] ?? 422);
-            }
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Aluno atualizado com sucesso!',
-                'redirect' => route('alunos.index')
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Erro ao atualizar aluno',
-                'error' => $e->getMessage()
-            ], 500);
         }
     }
 
