@@ -11,10 +11,8 @@ Este projeto é uma aplicação web completa para gerenciamento de alunos, com u
 - ✅ **CRUD Completo**: Cadastrar, Listar, Visualizar, Editar e Excluir alunos
 - ✅ **Validações**: Campos obrigatórios, email único, CPF único, data válida
 - ✅ **Máscaras**: Formatação automática de CPF, telefone e CEP
-- ✅ **Busca de Endereço**: Auto-preenchimento via CEP (API ViaCEP)
 - ✅ **Interface Responsiva**: Bootstrap 5 com design moderno
 - ✅ **Tabela Dinâmica**: DataTables com paginação, busca e ordenação
-- ✅ **Feedback Visual**: Mensagens de sucesso/erro e validações em tempo real
 - ✅ **Modal de Confirmação**: Para exclusão de registros
 
 ## 🚀 Tecnologias Utilizadas
@@ -39,9 +37,24 @@ Este projeto é uma aplicação web completa para gerenciamento de alunos, com u
 - Docker e Docker Compose
 - Git
 
-### Passo a Passo para Instalação
+### Passo a Passo para Instalação e Deploy
 
-#### 1. Clone o repositório
 ```bash
+
+#### 2. Clonar o repositório
 git clone https://github.com/Thales-github/desafio-deep
+
+#### 2. Acessar diretório
+
 cd desafio-deep
+
+#### 3. Subir aplicação Laravel
+
+composer run dev
+#### 4.Subir contêiner Docker
+
+docker compose up -d
+
+#### 4.acessar a aplicação web
+
+http://localhost:8000/alunos
