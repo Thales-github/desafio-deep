@@ -5,7 +5,7 @@ Foi desenvolvido com **Laravel 12**, utilizando **Blade** e **Bootstrap** no fro
 
 ## 📋 Sobre o Projeto
 
-Este projeto é uma aplicação web completa para gerenciamento de alunos, com uma arquitetura que separa a API (backend) da interface web, permitindo tanto o consumo via API quanto uma interface amigável para usuários finais.
+Este projeto é uma aplicação web completa para gerenciamento de escola, com uma arquitetura que separa a API (backend) da interface web, permitindo tanto o consumo via API quanto uma interface amigável para usuários finais.
 
 ### ✨ Funcionalidades
 
