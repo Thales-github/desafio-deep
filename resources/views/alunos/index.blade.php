@@ -293,7 +293,8 @@
         // Inicializar DataTable
         $('#alunosTable').DataTable({
             language: {
-                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json'
+                // Use URL absoluta para evitar falhas de carregamento do arquivo de idioma
+                url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json'
             },
             order: [
                 [1, 'asc']
