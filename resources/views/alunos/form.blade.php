@@ -99,15 +99,15 @@
                             </div>
 
                             <div class="col-md-2">
-                                <label for="status" class="form-label">Situação *</label>
-                                <select class="form-select @error('status') is-invalid @enderror"
-                                    id="status"
-                                    name="status"
+                                <label for="ativo" class="form-label">Situação *</label>
+                                <select class="form-select @error('ativo') is-invalid @enderror"
+                                    id="ativo"
+                                    name="ativo"
                                     required>
-                                    <option value="ativo" {{ (old('status', $aluno['status'] ?? '') == 'ativo') ? 'selected' : '' }}>Ativo</option>
-                                    <option value="inativo" {{ (old('status', $aluno['status'] ?? '') == 'inativo') ? 'selected' : '' }}>Inativo</option>
+                                    <option value="1" {{ (string) old('ativo', $aluno['ativo'] ?? '') === '1' ? 'selected' : '' }}>Ativo</option>
+                                    <option value="0" {{ (string) old('ativo', $aluno['ativo'] ?? '') === '0' ? 'selected' : '' }}>Inativo</option>
                                 </select>
-                                @error('status')
+                                @error('ativo')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

@@ -10,22 +10,49 @@ use App\Validacoes\Validacoes;
 class Alunos extends Controller
 {
 
+    /**
+     * Método para normalizar os campos de entrada do aluno, 
+     * removendo máscaras e outros caracteres que podem 
+     * impedir o funciuonamento correto da aplicação.
+     */
+    private function normalizarEntradaAluno(Request $request): void
+    {
+        $documentoUnico = $request->input('documento_unico');
+        $telefone = $request->input('telefone');
+        $cep = $request->input('cep');
+
+        $documentoUnicoNumerico = $documentoUnico === null ? null : preg_replace('/\D+/', '', (string) $documentoUnico);
+        $telefoneNumerico = $telefone === null ? null : preg_replace('/\D+/', '', (string) $telefone);
+        $cepNumerico = $cep === null ? null : preg_replace('/\D+/', '', (string) $cep);
+
+        $request->merge([
+            'documento_unico' => $documentoUnicoNumerico === '' ? null : $documentoUnicoNumerico,
+            'telefone' => $telefoneNumerico === '' ? null : $telefoneNumerico,
+            'cep' => $cepNumerico === '' ? null : $cepNumerico,
+        ]);
+
+        // dd($request->all());
+        // die();
+    }
+
     private function gerarVetorValidacaoDeAluno(bool $atualizar = false): array
     {
 
         $validacoesDeAluno = [
             'nome' => 'required|string|max:255',
-            'documento_unico' => 'required|string|unique:alunos,documento_unico',
+            'documento_unico' => 'required|digits:11|unique:alunos,documento_unico',
             'email' => 'required|email|unique:alunos,email',
             'data_nascimento' => 'required|date|before:today',
-            'cep' => 'nullable|string|size:8',
+            'ativo' => 'required|integer|in:0,1',
+            'telefone' => 'required|digits_between:10,11',
+            'cep' => 'nullable|digits:8',
             'logradouro' => 'nullable|string|max:100',
             'bairro' => 'nullable|string|max:100',
             'uf' => 'nullable|string|size:2'
         ];
 
         if ($atualizar) {
-            $validacoesDeAluno['documento_unico'] = 'required|string|unique:alunos,documento_unico,' . request()->route('id');
+            $validacoesDeAluno['documento_unico'] = 'required|digits:11|unique:alunos,documento_unico,' . request()->route('id');
             $validacoesDeAluno['email'] = 'required|email|unique:alunos,email,' . request()->route('id');
         }
 
@@ -37,13 +64,13 @@ class Alunos extends Controller
     {
         return [
             // Documento único
-            'documento_unico.required' => 'documento_unico é obrigatório.',
-            'documento_unico.unique' => 'documento_unico inválido.', // Segurança não pode revelar que já existe
-            'documento_unico.string' => 'documento_unico inválido.',
+            'documento_unico.required' => 'CPF é obrigatório.',
+            'documento_unico.unique' => 'CPF inválido.', // por segurança não divulgar existência de CPF
+            'documento_unico.digits' => 'CPF deve ter 11 dígitos.',
 
             // Email
             'email.required' => 'email é obrigatório.',
-            'email.unique' => 'email inválido.', // Segurança não pode revelar que já existe
+            'email.unique' => 'E-mail já cadastrado.',
             'email.email' => 'email inválido.',
 
             // Nome
@@ -55,7 +82,16 @@ class Alunos extends Controller
             'data_nascimento.before' => 'Você deve ter pelo menos 16 anos para se cadastrar.',
 
             // CEP
-            'cep.size' => 'cep deve ter 8 dígitos.',
+            'cep.digits' => 'cep deve ter 8 dígitos.',
+
+            // Telefone
+            'telefone.required' => 'telefone é obrigatório.',
+            'telefone.digits_between' => 'telefone inválido.',
+
+            // Ativo
+            'ativo.required' => 'status é obrigatório.',
+            'ativo.in' => 'status inválido.',
+            'ativo.integer' => 'status inválido.',
 
             // UF
             'uf.size' => 'uf deve ter 2 caracteres.'
@@ -69,11 +105,15 @@ class Alunos extends Controller
         $alunosModel = new AlunosModel();
 
         try {
+            $this->normalizarEntradaAluno($request);
 
             $dadosValidos = $request->validate(
                 $this->gerarVetorValidacaoDeAluno(),
                 $this->vetorMensagemCamposInvalidos()
             );
+
+            // var_dump($dadosValidos);
+            // die();
 
             $aluno = $alunosModel->cadastrar($dadosValidos);
 
@@ -94,6 +134,7 @@ class Alunos extends Controller
         $AlunosModel = new alunosModel();
 
         try {
+            $this->normalizarEntradaAluno($request);
 
             $aluno = $AlunosModel->detalhar($id);
 
