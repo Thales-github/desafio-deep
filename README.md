@@ -1,6 +1,7 @@
-# 📚 Sistema de Cadastro de Alunos
+# 📚 Sistema de Escola
 
-Sistema completo de CRUD (Create, Read, Update, Delete) para gerenciamento de alunos, desenvolvido com **Laravel 12**, utilizando **Blade** e **Bootstrap** no front-end, e **MySQL** rodando em **Docker** para o banco de dados.
+Sistema completo de CRUD (Create, Read, Update, Delete) para gerenciamento de alunos, professores e disciplinas.
+Foi desenvolvido com **Laravel 12**, utilizando **Blade** e **Bootstrap** no front-end, e **MySQL** rodando em **Docker** para o banco de dados.
 
 ## 📋 Sobre o Projeto
 
@@ -45,19 +46,16 @@ Este projeto é uma aplicação web completa para gerenciamento de alunos, com u
 git clone https://github.com/Thales-github/desafio-deep
 
 #### 2. Acessar diretório
-
 cd desafio-deep
 
 #### 3. Subir aplicação Laravel
-
 composer run dev
+
 #### 4.Subir contêiner Docker
-
 docker compose up -d
-#### 5.Executar as migrations do banco de dados
 
+#### 5.Executar as migrations do banco de dados
 php artisan migrate
 
 #### 6.acessar a aplicação web
-
 http://localhost:8000/alunos
