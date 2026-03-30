@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Http\Controllers\Alunos;
+use App\Http\Controllers\AlunosDisciplinas;
+use App\Http\Controllers\Disciplinas;
 use App\Http\Controllers\Professores;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -194,6 +196,154 @@ class ApiService
     {
         try {
             $controller = new Professores();
+            $response = $controller->apagar($id);
+            return $this->toArray($response);
+        } catch (\Exception $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
+
+    // DISCIPLINAS
+    public function getDisciplinas()
+    {
+        try {
+            $controller = new Disciplinas();
+            $request = new Request();
+            $response = $controller->listar($request);
+            $conteudo = $response->getData(true);
+
+            if (isset($conteudo['dados']) && is_array($conteudo['dados'])) {
+                return $conteudo['dados'];
+            }
+
+            return [];
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
+    public function getDisciplina($id)
+    {
+        try {
+            $controller = new Disciplinas();
+            $response = $controller->detalhar($id);
+            $dados = $response->getData(true);
+
+            if (isset($dados['dados']) && is_array($dados['dados'])) {
+                return $dados['dados'];
+            }
+
+            return [];
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
+    public function createDisciplina($dados)
+    {
+        try {
+            $controller = new Disciplinas();
+            $request = new Request();
+            $request->merge($dados);
+            $response = $controller->cadastrar($request);
+            return $response->getData(true);
+        } catch (\Exception $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
+
+    public function updateDisciplina($id, $dados)
+    {
+        try {
+            $controller = new Disciplinas();
+            $request = new Request();
+            $request->merge($dados);
+            $request->headers->set('Content-Type', 'application/json');
+            $response = $controller->atualizar($request, $id);
+            return $response->getData(true);
+        } catch (\Exception $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
+
+    public function deleteDisciplina($id)
+    {
+        try {
+            $controller = new Disciplinas();
+            $response = $controller->apagar($id);
+            return $this->toArray($response);
+        } catch (\Exception $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
+
+    // ALUNOS DISCIPLINAS (MATRICULAS)
+    public function getMatriculas()
+    {
+        try {
+            $controller = new AlunosDisciplinas();
+            $request = new Request();
+            $response = $controller->listar($request);
+            $conteudo = $response->getData(true);
+
+            if (isset($conteudo['dados']) && is_array($conteudo['dados'])) {
+                return $conteudo['dados'];
+            }
+
+            return [];
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
+    public function getMatricula($id)
+    {
+        try {
+            $controller = new AlunosDisciplinas();
+            $response = $controller->detalhar($id);
+            $dados = $response->getData(true);
+
+            if (isset($dados['dados']) && is_array($dados['dados'])) {
+                return $dados['dados'];
+            }
+
+            return [];
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
+    public function createMatricula($dados)
+    {
+        try {
+            $controller = new AlunosDisciplinas();
+            $request = new Request();
+            $request->merge($dados);
+            $response = $controller->cadastrar($request);
+            return $response->getData(true);
+        } catch (\Exception $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
+
+    public function updateMatricula($id, $dados)
+    {
+        try {
+            $controller = new AlunosDisciplinas();
+            $request = new Request();
+            $request->merge($dados);
+            $request->headers->set('Content-Type', 'application/json');
+            $response = $controller->atualizar($request, $id);
+            return $response->getData(true);
+        } catch (\Exception $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
+
+    public function deleteMatricula($id)
+    {
+        try {
+            $controller = new AlunosDisciplinas();
             $response = $controller->apagar($id);
             return $this->toArray($response);
         } catch (\Exception $e) {

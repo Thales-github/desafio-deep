@@ -36,6 +36,8 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('alunos.index') }}">Alunos</a></li>
                             <li><a class="dropdown-item" href="{{ route('professores.index') }}">Professores</a></li>
+                            <li><a class="dropdown-item" href="{{ route('disciplinas.index') }}">Disciplinas</a></li>
+                            <li><a class="dropdown-item" href="{{ route('alunos-disciplinas.index') }}">Matriculas</a></li>
                         </ul>
                     </li>
                 </ul>
