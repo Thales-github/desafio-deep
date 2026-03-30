@@ -714,7 +714,7 @@
           ]
         }
       ],
-      "description": "Aqui ficam contido as rotas que se referem a entidade ALUNOS"
+      "description": "Aqui ficam contido as rotas que se referem a entidade ALUNOS\n\n- Cadastro\n    \n- Listagem\n    \n- Alteração\n    \n- Exclusão"
     },
     {
       "name": "PROFESSORES",
@@ -1368,7 +1368,7 @@
           ]
         }
       ],
-      "description": "Aqui ficam contido as rotas que se referem a entidade PROFESSORES"
+      "description": "Aqui ficam contido as rotas que se referem a entidade PROFESSORES\n\n- Cadastro\n    \n- Listagem\n    \n- Alteração\n    \n- Exclusão"
     },
     {
       "name": "DISCIPLINAS",
@@ -2038,7 +2038,7 @@
           ]
         }
       ],
-      "description": "Aqui ficam contido as rotas que se referem a entidade DIISCIPLINAS"
+      "description": "Aqui ficam contido as rotas que se referem a entidade DIISCIPLINAS\n\n- Cadastro\n    \n- Listagem\n    \n- Alteração\n    \n- Exclusão"
     },
     {
       "name": "ALUNOS - DISCIPLINAS",
@@ -2692,7 +2692,7 @@
           ]
         }
       ],
-      "description": "Aqui ficam contido as rotas que se referem ao relacionamento das entidades ALUNOS e DISCIPLINAS"
+      "description": "Aqui ficam contido as rotas que se referem ao relacionamento das entidades ALUNOS e DISCIPLINAS\n\n- Cadastro\n    \n- Listagem\n    \n- Alteração\n    \n- Exclusão"
     }
   ]
 }

@@ -9,21 +9,35 @@ use App\Models\Professores as ProfessoresModel;
 
 class Professores extends Controller
 {
+    private function normalizarEntradaProfessor(Request $request): void
+    {
+        $documentoUnico = $request->input('documento_unico');
+        $telefone = $request->input('telefone');
+
+        $documentoUnicoNumerico = $documentoUnico === null ? null : preg_replace('/\D+/', '', (string) $documentoUnico);
+        $telefoneNumerico = $telefone === null ? null : preg_replace('/\D+/', '', (string) $telefone);
+
+        $request->merge([
+            'documento_unico' => $documentoUnicoNumerico === '' ? null : $documentoUnicoNumerico,
+            'telefone' => $telefoneNumerico === '' ? null : $telefoneNumerico,
+        ]);
+    }
+
     private function gerarVetorValidacaoDeProfessor(bool $atualizar = false): array
     {
 
         $validacoesDeProfessor = [
             'nome' => 'required|string|max:100',
             'email' => 'required|email|unique:professores,email|max:100',
-            'documento_unico' => 'required|string|unique:professores,documento_unico|max:100',
+            'documento_unico' => 'required|digits:11|unique:professores,documento_unico',
             'data_nascimento' => 'required|date|before:today',
-            'telefone' => 'nullable|string|max:15',
+            'telefone' => 'nullable|digits_between:10,11',
             'nivel_formacao' => 'integer|in:0,1,2,3',
             'ativo' => 'integer|in:0,1'
         ];
 
         if ($atualizar) {
-            $validacoesDeProfessor['documento_unico'] = 'required|string|unique:professores,documento_unico,' . request()->route('id');
+            $validacoesDeProfessor['documento_unico'] = 'required|digits:11|unique:professores,documento_unico,' . request()->route('id');
             $validacoesDeProfessor['email'] = 'required|email|unique:professores,email,' . request()->route('id');
         }
 
@@ -36,13 +50,12 @@ class Professores extends Controller
 
         return [
             // documento único
-            'documento_unico.required' => 'documento_unico é obrigatório.',
-            'documento_unico.unique' => 'documento_unico inválido.', // Segurança
-            'documento_unico.string' => 'documento_unico inválido.',
-            'documento_unico.max' => 'documento_unico deve ter no máximo :max caracteres.',
+            'documento_unico.required' => 'CPF é obrigatório.',
+            'documento_unico.unique' => 'CPF inválido.', // por segurança não divulgar existência de CPF
+            'documento_unico.digits' => 'CPF deve ter 11 dígitos.',
             // email
             'email.required' => 'email é obrigatório.',
-            'email.unique' => 'email inválido.', // Segurança
+            'email.unique' => 'E-mail já cadastrado.',
             'email.email' => 'email inválido.',
             'email.max' => 'email deve ter no máximo :max caracteres.',
             // nome
@@ -54,8 +67,7 @@ class Professores extends Controller
             'data_nascimento.date' => 'data_nascimento inválida.',
             'data_nascimento.before' => 'Você deve ter pelo menos 16 anos para se cadastrar.',
             // telefone
-            'telefone.string' => 'telefone inválido.',
-            'telefone.max' => 'telefone deve ter no máximo :max caracteres.',
+            'telefone.digits_between' => 'telefone inválido.',
             // nivel_formacao
             'nivel_formacao.integer' => 'nivel_formacao inválido.',
             'nivel_formacao.in' => 'nivel_formacao inválido.', // Segurança: não revela valores
@@ -75,6 +87,7 @@ class Professores extends Controller
         $professoresModel = new ProfessoresModel();
 
         try {
+            $this->normalizarEntradaProfessor($request);
 
             $dadosValidos = $request->validate(
                 $this->gerarVetorValidacaoDeProfessor(),
@@ -100,6 +113,7 @@ class Professores extends Controller
         $professoresModel = new ProfessoresModel();
 
         try {
+            $this->normalizarEntradaProfessor($request);
 
             $professor = $professoresModel->detalhar($id);
 

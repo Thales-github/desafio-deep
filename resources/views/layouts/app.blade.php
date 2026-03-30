@@ -35,6 +35,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('alunos.index') }}">Alunos</a></li>
+                            <li><a class="dropdown-item" href="{{ route('professores.index') }}">Professores</a></li>
                         </ul>
                     </li>
                 </ul>

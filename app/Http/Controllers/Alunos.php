@@ -112,9 +112,6 @@ class Alunos extends Controller
                 $this->vetorMensagemCamposInvalidos()
             );
 
-            // var_dump($dadosValidos);
-            // die();
-
             $aluno = $alunosModel->cadastrar($dadosValidos);
 
             return response()->json($validacoes->gerarRetornoHttp(201, 'Aluno cadastrado com sucesso', $aluno));

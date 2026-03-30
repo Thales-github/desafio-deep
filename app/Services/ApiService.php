@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Http\Controllers\Alunos;
+use App\Http\Controllers\Professores;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -120,6 +121,82 @@ class ApiService
             return $this->toArray($response);
         } catch (\Exception $e) {
 
+            return ['error' => $e->getMessage()];
+        }
+    }
+
+    // PROFESSORES
+    public function getProfessores()
+    {
+        try {
+            $controller = new Professores();
+            $request = new Request();
+            $response = $controller->listar($request);
+            $conteudo = $response->getData(true);
+
+            if (isset($conteudo['dados']) && is_array($conteudo['dados'])) {
+                return $conteudo['dados'];
+            }
+
+            return [];
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
+    public function getProfessor($id)
+    {
+        try {
+            $controller = new Professores();
+            $response = $controller->detalhar($id);
+            $dados = $response->getData(true);
+
+            if (isset($dados['dados']) && is_array($dados['dados'])) {
+                return $dados['dados'];
+            }
+
+            return [];
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
+    public function createProfessor($dados)
+    {
+        try {
+            $controller = new Professores();
+            $request = new Request();
+            $request->merge($dados);
+            $response = $controller->cadastrar($request);
+
+            return $response->getData(true);
+        } catch (\Exception $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
+
+    public function updateProfessor($id, $dados)
+    {
+        try {
+            $controller = new Professores();
+            $request = new Request();
+            $request->merge($dados);
+            $request->headers->set('Content-Type', 'application/json');
+            $response = $controller->atualizar($request, $id);
+
+            return $response->getData(true);
+        } catch (\Exception $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
+
+    public function deleteProfessor($id)
+    {
+        try {
+            $controller = new Professores();
+            $response = $controller->apagar($id);
+            return $this->toArray($response);
+        } catch (\Exception $e) {
             return ['error' => $e->getMessage()];
         }
     }
