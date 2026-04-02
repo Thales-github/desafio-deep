@@ -23,7 +23,7 @@ Este projeto é uma aplicação web completa para gerenciamento de escola, com u
 | PHP        | 8.2+   | Linguagem principal      |
 | Laravel    | 12.x   | Framework PHP            |
 | MySQL      | 8.0    | Banco de dados           |
-| Docker     | 24.0+  | Containerização do banco |
+| Docker     | 24.0+  | Containerização (Laravel Sail) |
 | Bootstrap  | 5.3    | Framework CSS            |
 | jQuery     | 3.7+   | Manipulação DOM e AJAX   |
 | DataTables | 1.13+  | Tabelas dinâmicas        |
@@ -38,27 +38,50 @@ Este projeto é uma aplicação web completa para gerenciamento de escola, com u
 - Docker e Docker Compose
 - Git
 
-### Passo a Passo para Instalação e Deploy(WSl)
+### Passo a passo (Laravel Sail)
+
+Com o `.env` padrão do Sail, `DB_HOST=mysql` só existe **dentro da rede Docker**. Por isso as migrations devem rodar **pelo Sail**, não com `php artisan` direto no WSL/Linux.
+
+1. **Clonar e entrar no projeto**
 
 ```bash
-
-#### 1. Clonar o repositório
 git clone https://github.com/Thales-github/desafio-deep
-
-#### 2. Acessar diretório
 cd desafio-deep
+```
 
-#### 3. Subir aplicação Laravel
-composer run dev
+2. **Instalar dependências (no host)**
 
-#### 4. Subir contêiner Docker
-docker compose up -d
+```bash
+composer install
+cp .env.example .env   # se ainda não existir
+php artisan key:generate
+```
 
-### 4.1 Subir contêiner com Laravel Sail
+3. **Subir os containers**
+
+```bash
 ./sail up -d
+```
 
-#### 5.Executar as migrations do banco de dados
-php artisan migrate
+4. **Migrations (sempre via Sail quando `DB_HOST=mysql`)**
 
-#### 6. Acessar a aplicação web
-http://localhost:8000/alunos
+```bash
+./sail artisan migrate
+```
+
+5.  **Url da aplicação disponibilizada**
+
+```bash
+localhost/alunos
+```
+
+6. **Desenvolvimento**
+
+- App pelo Sail: `./sail open` ou acesse a URL que o Sail expõe (em geral `http://localhost`, conforme `APP_PORT` no `.env`).
+- Ou, no host: `./sail artisan serve` se quiser usar o servidor embutido **dentro** do container.
+
+**Resumo:** use `./sail artisan …`, `./sail composer …`, `./sail npm …` para tudo que precisa falar com o MySQL em `mysql`.
+
+### Se quiser usar `php artisan` no host
+
+Aí o `.env` precisa apontar para o MySQL publicado na máquina, por exemplo `DB_HOST=127.0.0.1` e a porta mapeada (`DB_PORT=3306` ou `FORWARD_DB_PORT` se você alterou). Isso é um fluxo separado do Sail com `DB_HOST=mysql`.
