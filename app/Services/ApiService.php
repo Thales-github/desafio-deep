@@ -6,11 +6,31 @@ use App\Http\Controllers\Alunos;
 use App\Http\Controllers\AlunosDisciplinas;
 use App\Http\Controllers\Disciplinas;
 use App\Http\Controllers\Professores;
+use App\Http\Requests\Aluno\ListarAlunosRequest;
+use App\Http\Requests\Aluno\StoreAlunoRequest;
+use App\Http\Requests\Aluno\UpdateAlunoRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Routing\Route;
+use Illuminate\Routing\Router;
+use Illuminate\Validation\ValidationException;
 
 class ApiService
 {
+    /**
+     * Request sintética com a mesma URI de routes/api.php + rota resolvida (necessário para UpdateAlunoRequest::route('id')).
+     */
+    private function createMatchedApiRequest(string $method, string $relativePath, array $payload = []): Request
+    {
+        $baseUrl = rtrim((string) config('app.url', 'http://127.0.0.1'), '/');
+        $uri = $baseUrl.'/'.ltrim($relativePath, '/');
+        $request = Request::create($uri, strtoupper($method), $payload);
+        $request->setRouteResolver(static function () use ($request): Route {
+            return app(Router::class)->getRoutes()->match($request);
+        });
+
+        return $request;
+    }
+
     private function toArray($dados)
     {
         if (is_array($dados)) {
@@ -31,21 +51,21 @@ class ApiService
     public function getAlunos()
     {
         try {
+            $base = $this->createMatchedApiRequest('GET', 'api/alunos/listar');
+            $formRequest = ListarAlunosRequest::createFrom($base);
+            $formRequest->setContainer(app())->setRedirector(app('redirect'));
+            $formRequest->validateResolved();
+
             $controller = new Alunos();
-            $request = new Request();
-            $response = $controller->listar($request);
+            $response = $controller->listar($formRequest);
+            $conteudo = $response->getData(true);
 
-            // ✅ CORREÇÃO: pegar o conteúdo JSON da resposta
-            $conteudo = $response->getData(true); // true = array associativo
-
-            // DEBUG (pode remover depois)
-            // dd($conteudo);
-
-            // Agora sim, verifica se tem 'dados'
             if (isset($conteudo['dados']) && is_array($conteudo['dados'])) {
                 return $conteudo['dados'];
             }
 
+            return [];
+        } catch (ValidationException $e) {
             return [];
         } catch (\Exception $e) {
             return [];
@@ -55,13 +75,16 @@ class ApiService
     public function getAluno($id)
     {
         try {
-            $controller = new Alunos();
-            $request = new Request();
-            $response = $controller->detalhar($id); // Chama o método detalhar da API
+            $id = (int) $id;
 
+            $controller = new Alunos();
+            $response = $controller->detalhar($id);
             $dados = $response->getData(true);
 
-            // A API retorna { "codigo":200, "dados": {...} }
+            if (($dados['codigo'] ?? null) === 404) {
+                return [];
+            }
+
             if (isset($dados['dados']) && is_array($dados['dados'])) {
                 return $dados['dados'];
             }
@@ -74,19 +97,25 @@ class ApiService
 
     public function createAluno($dados)
     {
-
         try {
+            $payload = $this->toArray($dados);
+
+            // Requisição sintética + FormRequest: mesmas regras que a rota HTTP
+            $baseRequest = Request::create('/', 'POST', $payload);
+            $formRequest = StoreAlunoRequest::createFrom($baseRequest);
+            $formRequest->setContainer(app())->setRedirector(app('redirect'));
+            $formRequest->validateResolved();
 
             $controller = new Alunos();
-            $request = new Request();
-            $request->merge($dados);
+            $response = $controller->cadastrar($formRequest);
 
-            $response = $controller->cadastrar($request);
-
-            // Converte para array
-            $conteudo = $response->getData(true);
-
-            return $conteudo;
+            return $response->getData(true);
+        } catch (ValidationException $e) {
+            return [
+                'codigo' => 422,
+                'mensagem' => 'Dados inválidos.',
+                'dados' => ['erros' => $e->errors()],
+            ];
         } catch (\Exception $e) {
             return ['error' => $e->getMessage()];
         }
@@ -95,21 +124,24 @@ class ApiService
     public function updateAluno($id, $dados)
     {
         try {
-            // \Log::info('1️⃣ updateAluno INICIADO', ['id' => $id, 'dados_recebidos' => $dados]);
+            $id = (int) $id;
+            $payload = $this->toArray($dados);
+
+            $base = $this->createMatchedApiRequest('PUT', "api/alunos/atualizar/{$id}", $payload);
+            $formRequest = UpdateAlunoRequest::createFrom($base);
+            $formRequest->setContainer(app())->setRedirector(app('redirect'));
+            $formRequest->validateResolved();
 
             $controller = new Alunos();
-            $request = new Request();
-            $request->merge($dados);
-            $request->headers->set('Content-Type', 'application/json');
+            $response = $controller->atualizar($formRequest, $id);
 
-            $response = $controller->atualizar($request, $id);
-
-            $conteudo = $response->getData(true); // Pega o JSON como array
-
-            // \Log::info('4️⃣ Conteúdo processado CORRETAMENTE', ['conteudo' => $conteudo]);
-
-            return $conteudo; // Agora retorna o array correto com 'codigo', 'mensagem', 'dados'
-
+            return $response->getData(true);
+        } catch (ValidationException $e) {
+            return [
+                'codigo' => 422,
+                'mensagem' => 'Erro de validação',
+                'dados' => ['erros' => $e->errors()],
+            ];
         } catch (\Exception $e) {
             return ['error' => $e->getMessage()];
         }
@@ -118,11 +150,13 @@ class ApiService
     public function deleteAluno($id)
     {
         try {
+            $id = (int) $id;
+
             $controller = new Alunos();
             $response = $controller->apagar($id);
-            return $this->toArray($response);
-        } catch (\Exception $e) {
 
+            return $response->getData(true);
+        } catch (\Exception $e) {
             return ['error' => $e->getMessage()];
         }
     }
@@ -130,7 +164,9 @@ class ApiService
     // PROFESSORES
     public function getProfessores()
     {
+
         try {
+
             $controller = new Professores();
             $request = new Request();
             $response = $controller->listar($request);
@@ -148,7 +184,9 @@ class ApiService
 
     public function getProfessor($id)
     {
+
         try {
+
             $controller = new Professores();
             $response = $controller->detalhar($id);
             $dados = $response->getData(true);
@@ -165,7 +203,9 @@ class ApiService
 
     public function createProfessor($dados)
     {
+
         try {
+
             $controller = new Professores();
             $request = new Request();
             $request->merge($dados);
@@ -179,7 +219,9 @@ class ApiService
 
     public function updateProfessor($id, $dados)
     {
+
         try {
+
             $controller = new Professores();
             $request = new Request();
             $request->merge($dados);
@@ -194,9 +236,12 @@ class ApiService
 
     public function deleteProfessor($id)
     {
+
         try {
+
             $controller = new Professores();
             $response = $controller->apagar($id);
+
             return $this->toArray($response);
         } catch (\Exception $e) {
             return ['error' => $e->getMessage()];
@@ -206,7 +251,9 @@ class ApiService
     // DISCIPLINAS
     public function getDisciplinas()
     {
+
         try {
+
             $controller = new Disciplinas();
             $request = new Request();
             $response = $controller->listar($request);
@@ -224,7 +271,9 @@ class ApiService
 
     public function getDisciplina($id)
     {
+
         try {
+
             $controller = new Disciplinas();
             $response = $controller->detalhar($id);
             $dados = $response->getData(true);
@@ -241,11 +290,14 @@ class ApiService
 
     public function createDisciplina($dados)
     {
+
         try {
+
             $controller = new Disciplinas();
             $request = new Request();
             $request->merge($dados);
             $response = $controller->cadastrar($request);
+
             return $response->getData(true);
         } catch (\Exception $e) {
             return ['error' => $e->getMessage()];
@@ -254,12 +306,15 @@ class ApiService
 
     public function updateDisciplina($id, $dados)
     {
+
         try {
+
             $controller = new Disciplinas();
             $request = new Request();
             $request->merge($dados);
             $request->headers->set('Content-Type', 'application/json');
             $response = $controller->atualizar($request, $id);
+
             return $response->getData(true);
         } catch (\Exception $e) {
             return ['error' => $e->getMessage()];
@@ -268,9 +323,12 @@ class ApiService
 
     public function deleteDisciplina($id)
     {
+
         try {
+
             $controller = new Disciplinas();
             $response = $controller->apagar($id);
+            
             return $this->toArray($response);
         } catch (\Exception $e) {
             return ['error' => $e->getMessage()];
@@ -280,7 +338,9 @@ class ApiService
     // ALUNOS DISCIPLINAS (MATRICULAS)
     public function getMatriculas()
     {
+
         try {
+
             $controller = new AlunosDisciplinas();
             $request = new Request();
             $response = $controller->listar($request);
@@ -298,7 +358,9 @@ class ApiService
 
     public function getMatricula($id)
     {
+
         try {
+
             $controller = new AlunosDisciplinas();
             $response = $controller->detalhar($id);
             $dados = $response->getData(true);
@@ -328,12 +390,15 @@ class ApiService
 
     public function updateMatricula($id, $dados)
     {
+
         try {
+
             $controller = new AlunosDisciplinas();
             $request = new Request();
             $request->merge($dados);
             $request->headers->set('Content-Type', 'application/json');
             $response = $controller->atualizar($request, $id);
+            
             return $response->getData(true);
         } catch (\Exception $e) {
             return ['error' => $e->getMessage()];
@@ -342,9 +407,12 @@ class ApiService
 
     public function deleteMatricula($id)
     {
+
         try {
+
             $controller = new AlunosDisciplinas();
             $response = $controller->apagar($id);
+
             return $this->toArray($response);
         } catch (\Exception $e) {
             return ['error' => $e->getMessage()];

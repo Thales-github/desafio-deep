@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+@php
+    $alunosLista = is_array($alunos ?? null) ? $alunos : [];
+    $temAlunos = count($alunosLista) > 0;
+@endphp
+
 @section('title', 'Lista de Alunos')
 
 @push('styles')
@@ -111,8 +116,21 @@
             </div>
             @endif
 
-            <!-- Tabela de Alunos -->
-            <div class="table-responsive">
+            @unless($temAlunos)
+            <!-- Estado vazio: fora da tabela — DataTables não aceita colspan no tbody -->
+            <div class="text-center py-5 text-muted border rounded bg-light">
+                <i class="bi bi-inbox display-1 d-block mb-3"></i>
+                <h5>Nenhum aluno cadastrado</h5>
+                <p class="mb-3">Comece cadastrando seu primeiro aluno.</p>
+                <a href="{{ route('alunos.create') }}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-1"></i>
+                    Cadastrar Aluno
+                </a>
+            </div>
+            @endunless
+
+            <!-- Tabela de Alunos (tbody só com linhas 1:1 com colunas — evita alerta do DataTables) -->
+            <div class="table-responsive {{ $temAlunos ? '' : 'd-none' }}">
                 <table class="table table-hover table-striped" id="alunosTable">
                     <thead>
                         <tr>
@@ -126,9 +144,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($alunos as $aluno)
+                        @foreach($alunosLista as $aluno)
                         <tr>
-                            {{-- Use sintaxe de array com ?? para valores padrão --}}
                             <td><span class="badge bg-light text-dark">{{ $aluno['id'] }}</span></td>
 
                             <td>
@@ -183,7 +200,6 @@
 
                             <td class="table-actions">
                                 <div class="btn-group" role="group">
-
                                     <a href="{{ route('alunos.edit', $aluno['id'] ?? 0) }}"
                                         class="btn btn-sm btn-warning"
                                         title="Editar"
@@ -201,21 +217,7 @@
                                 </div>
                             </td>
                         </tr>
-                        @empty
-                        <tr>
-                            <td colspan="8" class="text-center py-5">
-                                <div class="text-muted">
-                                    <i class="bi bi-inbox display-1 d-block mb-3"></i>
-                                    <h5>Nenhum aluno cadastrado</h5>
-                                    <p class="mb-3">Comece cadastrando seu primeiro aluno.</p>
-                                    <a href="{{ route('alunos.create') }}" class="btn btn-primary">
-                                        <i class="bi bi-plus-circle me-1"></i>
-                                        Cadastrar Aluno
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -226,7 +228,7 @@
                     <div class="bg-light p-3 rounded">
                         <div class="row text-center">
                             <div class="col-md-4">
-                                <span class="d-block fs-4 fw-bold text-primary">{{ count($alunos) }}</span>
+                                <span class="d-block fs-4 fw-bold text-primary">{{ count($alunosLista) }}</span>
                                 <small class="text-muted">Total de Alunos</small>
                             </div>
                         </div>
@@ -280,47 +282,33 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
-        // Inicializar tooltips
+        var temAlunos = @json($temAlunos ?? false);
+
+        // Inicializar tooltips (só há botões na tabela quando há alunos)
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+        tooltipTriggerList.map(function(tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
 
-        if ($.fn.DataTable.isDataTable('#alunosTable')) {
-            $('#alunosTable').DataTable().destroy();
+        // DataTables exige uma célula por coluna — sem linha "colspan" no tbody
+        if (temAlunos) {
+            if ($.fn.DataTable.isDataTable('#alunosTable')) {
+                $('#alunosTable').DataTable().destroy();
+            }
+
+            $('#alunosTable').DataTable({
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json'
+                },
+                order: [[1, 'asc']],
+                pageLength: 10,
+                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, 'Todos']],
+                columnDefs: [{ orderable: false, targets: 6 }],
+            });
         }
 
-        // Inicializar DataTable
-        $('#alunosTable').DataTable({
-            language: {
-                // Use URL absoluta para evitar falhas de carregamento do arquivo de idioma
-                url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json'
-            },
-            order: [
-                [1, 'asc']
-            ],
-            pageLength: 10,
-            lengthMenu: [
-                [10, 25, 50, -1],
-                [10, 25, 50, "Todos"]
-            ],
-            columnDefs: [{
-                orderable: false,
-                targets: 6
-            }],
-            initComplete: function() {
-                // Adicionar classe para melhor aparência
-                this.api().columns().every(function() {
-                    var column = this;
-                    if (column.header().innerText === 'Status') {
-                        // Filtro customizado para status
-                    }
-                });
-            }
-        });
-
         // Modal de exclusão
-        $('.btn-delete').on('click', function() {
+        $(document).on('click', '.btn-delete', function() {
             const id = $(this).data('id');
             const name = $(this).data('name');
 
@@ -329,30 +317,6 @@
 
             const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
             modal.show();
-        });
-
-        // Filtro rápido por status
-        $('#statusFilter').on('change', function() {
-            var status = $(this).val();
-            var table = $('#alunosTable').DataTable();
-
-            if (status === '') {
-                table.column(6).search('').draw();
-            } else {
-                table.column(6).search(status).draw();
-            }
-        });
-
-        // Busca instantânea
-        $('#searchInput').on('keyup', function() {
-            var table = $('#alunosTable').DataTable();
-            table.search(this.value).draw();
-        });
-
-        // Exportar para Excel (opcional)
-        $('#exportBtn').on('click', function() {
-            // Implementar exportação se necessário
-            console.log('Exportar dados...');
         });
 
         // Atualizar contagem após exclusão

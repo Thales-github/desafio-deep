@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+@php
+    $professoresLista = is_array($professores ?? null) ? $professores : [];
+    $temProfessores = count($professoresLista) > 0;
+@endphp
+
 @section('title', 'Lista de Professores')
 
 @section('content')
@@ -15,7 +20,19 @@
         </div>
 
         <div class="card-body">
-            <div class="table-responsive">
+            @unless($temProfessores)
+            <div class="text-center py-5 text-muted border rounded bg-light">
+                <i class="bi bi-inbox display-1 d-block mb-3"></i>
+                <h5>Nenhum professor cadastrado</h5>
+                <p class="mb-3">Cadastre o primeiro professor na plataforma.</p>
+                <a href="{{ route('professores.create') }}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-1"></i>
+                    Novo Professor
+                </a>
+            </div>
+            @endunless
+
+            <div class="table-responsive {{ $temProfessores ? '' : 'd-none' }}">
                 <table class="table table-hover table-striped" id="professoresTable">
                     <thead>
                         <tr>
@@ -29,7 +46,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($professores as $professor)
+                        @foreach($professoresLista as $professor)
                         <tr>
                             <td>{{ $professor['id'] ?? '-' }}</td>
                             <td>{{ $professor['nome'] ?? '-' }}</td>
@@ -70,11 +87,7 @@
                                 </div>
                             </td>
                         </tr>
-                        @empty
-                        <tr>
-                            <td colspan="7" class="text-center py-4 text-muted">Nenhum professor cadastrado</td>
-                        </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -109,21 +122,25 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
-        $('#professoresTable').DataTable({
-            language: {
-                url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json'
-            },
-            order: [
-                [1, 'asc']
-            ],
-            pageLength: 10,
-            columnDefs: [{
-                orderable: false,
-                targets: 6
-            }]
-        });
+        var temProfessores = @json($temProfessores ?? false);
 
-        $('.btn-delete').on('click', function() {
+        if (temProfessores) {
+            if ($.fn.DataTable.isDataTable('#professoresTable')) {
+                $('#professoresTable').DataTable().destroy();
+            }
+
+            $('#professoresTable').DataTable({
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json'
+                },
+                order: [[1, 'asc']],
+                pageLength: 10,
+                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, 'Todos']],
+                columnDefs: [{ orderable: false, targets: 6 }]
+            });
+        }
+
+        $(document).on('click', '.btn-delete', function() {
             const id = $(this).data('id');
             const name = $(this).data('name');
 

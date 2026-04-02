@@ -6,7 +6,6 @@ use App\Services\ApiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-
 class AlunoWebController extends Controller
 {
     protected $api;
