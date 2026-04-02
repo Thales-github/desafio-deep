@@ -2,88 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Matricula\ListarMatriculasRequest;
+use App\Http\Requests\Matricula\StoreMatriculaRequest;
+use App\Http\Requests\Matricula\UpdateMatriculaRequest;
 use App\Models\AlunosDisciplinas as AlunosDisciplinasModel;
 use App\Validacoes\Validacoes;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\ValidationException;
 
 class AlunosDisciplinas extends Controller
 {
-
-    private function gerarVetorValidacaoDeMatricula(bool $atualizar = false, ?int $id = null): array
-    {
-        $regras = [
-            'aluno_id' => 'required|integer|exists:alunos,id',
-            'disciplina_id' => 'required|integer|exists:disciplinas,id',
-            'data_matricula' => 'nullable|date',
-            'status' => 'nullable|integer|in:1,2,3,4',
-            'nota_final' => 'nullable|numeric|min:0|max:10',
-            'faltas' => 'nullable|integer|min:0'
-        ];
-
-        // Na criação, verificar se aluno já não está matriculado na disciplina
-        if (!$atualizar) {
-            $regras['aluno_id'] .= '|unique:alunos_disciplinas,aluno_id,NULL,id,disciplina_id,' . request('disciplina_id');
-        }
-
-        return $regras;
-    }
-
-    private function vetorMensagemCamposInvalidos(): array
-    {
-        return [
-            // aluno_id
-            'aluno_id.required' => 'ID do aluno é obrigatório.',
-            'aluno_id.integer' => 'ID do aluno inválido.',
-            'aluno_id.exists' => 'Aluno não encontrado.',
-            'aluno_id.unique' => 'Aluno já matriculado nesta disciplina.',
-            // disciplina_id
-            'disciplina_id.required' => 'ID da disciplina é obrigatório.',
-            'disciplina_id.integer' => 'ID da disciplina inválido.',
-            'disciplina_id.exists' => 'Disciplina não encontrada.',
-            // data_matricula
-            'data_matricula.date' => 'Data de matrícula inválida.',
-            // status
-            'status.integer' => 'Status inválido.',
-            'status.in' => 'Status deve ser: 1 (cursando), 2 (aprovado), 3 (reprovado) ou 4 (trancado).',
-            // nota_final
-            'nota_final.numeric' => 'Nota final deve ser um número.',
-            'nota_final.min' => 'Nota final não pode ser menor que 0.',
-            'nota_final.max' => 'Nota final não pode ser maior que 10.',
-            // faltas
-            'faltas.integer' => 'Faltas deve ser um número inteiro.',
-            'faltas.min' => 'Faltas não pode ser negativa.'
-        ];
-    }
-
-    public function cadastrar(Request $request): JsonResponse
+    public function cadastrar(StoreMatriculaRequest $request): JsonResponse
     {
         $validacoes = new Validacoes();
         $alunosDisciplinasModel = new AlunosDisciplinasModel();
 
         try {
-            $dadosValidos = $request->validate(
-                $this->gerarVetorValidacaoDeMatricula(),
-                $this->vetorMensagemCamposInvalidos()
-            );
+            $dadosValidos = $request->validated();
 
-            // Define data de matrícula como hoje se não informada
-            if (!isset($dadosValidos['data_matricula'])) {
+            if (! isset($dadosValidos['data_matricula'])) {
                 $dadosValidos['data_matricula'] = now()->toDateString();
             }
 
             $matricula = $alunosDisciplinasModel->cadastrar($dadosValidos);
-
-            // Carrega relacionamentos para retornar dados completos
             $matricula->load(['aluno', 'disciplina']);
 
             return response()->json(
                 $validacoes->gerarRetornoHttp(201, 'Matrícula realizada com sucesso', $matricula)
-            );
-        } catch (ValidationException $e) {
-            return response()->json(
-                $validacoes->gerarRetornoHttp(422, 'Erro de validação', ['erros' => $e->errors()])
             );
         } catch (\Exception $e) {
             return response()->json(
@@ -92,33 +36,26 @@ class AlunosDisciplinas extends Controller
         }
     }
 
-    /**
-     * LISTAR - GET /api/alunos-disciplinas/listar
-     * Com possibilidade de filtros via query string
-     */
-    public function listar(Request $request): JsonResponse
+    public function listar(ListarMatriculasRequest $request): JsonResponse
     {
-
         $validacoes = new Validacoes();
         $alunosDisciplinasModel = new AlunosDisciplinasModel();
 
         try {
-            // Captura todos os possíveis filtros da query string
+            $validated = $request->validated();
+
             $filtros = [
-                'aluno_id' => $request->query('aluno_id'),
-                'disciplina_id' => $request->query('disciplina_id'),
-                'status' => $request->query('status'),
-                'data_inicio' => $request->query('data_inicio'),
-                'data_fim' => $request->query('data_fim'),
-                'ordenacao' => $request->query('ordenacao', 'created_at'),
-                'direcao' => $request->query('direcao', 'desc'),
-                'por_pagina' => $request->query('por_pagina')
+                'aluno_id' => $validated['aluno_id'] ?? null,
+                'disciplina_id' => $validated['disciplina_id'] ?? null,
+                'status' => $validated['status'] ?? null,
+                'data_inicio' => $validated['data_inicio'] ?? null,
+                'data_fim' => $validated['data_fim'] ?? null,
+                'ordenacao' => $validated['ordenacao'] ?? 'created_at',
+                'direcao' => $validated['direcao'] ?? 'desc',
+                'por_pagina' => $validated['por_pagina'] ?? null,
             ];
 
-            // Remove filtros vazios para não atrapalhar a query
-            $filtros = array_filter($filtros, function ($value) {
-                return $value !== null && $value !== '';
-            });
+            $filtros = array_filter($filtros, fn ($value) => $value !== null && $value !== '');
 
             $matriculas = $alunosDisciplinasModel->listar($filtros);
 
@@ -126,16 +63,14 @@ class AlunosDisciplinas extends Controller
                 $validacoes->gerarRetornoHttp(200, 'Matrículas listadas com sucesso', $matriculas)
             );
         } catch (\Exception $e) {
-
             return response()->json(
-                $validacoes->gerarRetornoHttp(500, 'Erro ao listar matrículas: ' . $e->getMessage())
+                $validacoes->gerarRetornoHttp(500, 'Erro ao listar matrículas: '.$e->getMessage())
             );
         }
     }
 
     public function detalhar(int $id): JsonResponse
     {
-
         $validacoes = new Validacoes();
         $alunosDisciplinasModel = new AlunosDisciplinasModel();
 
@@ -156,27 +91,18 @@ class AlunosDisciplinas extends Controller
         }
     }
 
-    public function atualizar(Request $request, int $id): JsonResponse
+    public function atualizar(UpdateMatriculaRequest $request, int $id): JsonResponse
     {
-
         $validacoes = new Validacoes();
         $alunosDisciplinasModel = new AlunosDisciplinasModel();
 
         try {
             $matricula = $alunosDisciplinasModel->detalhar($id);
-
-            $regras = $this->gerarVetorValidacaoDeMatricula(true, $id);
-            $dadosValidos = $request->validate($regras, $this->vetorMensagemCamposInvalidos());
-
-            $matricula->atualizar($dadosValidos);
+            $matricula->atualizar($request->validated());
             $matricula->load(['aluno', 'disciplina']);
 
             return response()->json(
                 $validacoes->gerarRetornoHttp(200, 'Matrícula atualizada com sucesso', $matricula)
-            );
-        } catch (ValidationException $e) {
-            return response()->json(
-                $validacoes->gerarRetornoHttp(422, 'Erro de validação', ['erros' => $e->errors()])
             );
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json(
@@ -191,7 +117,6 @@ class AlunosDisciplinas extends Controller
 
     public function apagar(int $id): JsonResponse
     {
-
         $validacoes = new Validacoes();
         $alunosDisciplinasModel = new AlunosDisciplinasModel();
 
@@ -214,7 +139,6 @@ class AlunosDisciplinas extends Controller
 
     public function matriculasPorAluno(int $alunoId): JsonResponse
     {
-
         $validacoes = new Validacoes();
         $alunosDisciplinasModel = new AlunosDisciplinasModel();
 
@@ -236,7 +160,6 @@ class AlunosDisciplinas extends Controller
 
     public function matriculasPorDisciplina(int $disciplinaId): JsonResponse
     {
-
         $validacoes = new Validacoes();
         $alunosDisciplinasModel = new AlunosDisciplinasModel();
 

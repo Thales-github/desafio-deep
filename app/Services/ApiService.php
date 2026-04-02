@@ -9,6 +9,15 @@ use App\Http\Controllers\Professores;
 use App\Http\Requests\Aluno\ListarAlunosRequest;
 use App\Http\Requests\Aluno\StoreAlunoRequest;
 use App\Http\Requests\Aluno\UpdateAlunoRequest;
+use App\Http\Requests\Disciplina\ListarDisciplinasRequest;
+use App\Http\Requests\Disciplina\StoreDisciplinaRequest;
+use App\Http\Requests\Disciplina\UpdateDisciplinaRequest;
+use App\Http\Requests\Matricula\ListarMatriculasRequest;
+use App\Http\Requests\Matricula\StoreMatriculaRequest;
+use App\Http\Requests\Matricula\UpdateMatriculaRequest;
+use App\Http\Requests\Professor\ListarProfessoresRequest;
+use App\Http\Requests\Professor\StoreProfessorRequest;
+use App\Http\Requests\Professor\UpdateProfessorRequest;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
@@ -17,13 +26,19 @@ use Illuminate\Validation\ValidationException;
 class ApiService
 {
     /**
-     * Request sintética com a mesma URI de routes/api.php + rota resolvida (necessário para UpdateAlunoRequest::route('id')).
+     * Request sintética com a mesma URI de routes/api.php + rota resolvida (ex.: Update*Request::route('id')).
+     * Em GET, $query vira query string (validação de listagens com filtros).
      */
-    private function createMatchedApiRequest(string $method, string $relativePath, array $payload = []): Request
+    private function createMatchedApiRequest(string $method, string $relativePath, array $payload = [], array $query = []): Request
     {
         $baseUrl = rtrim((string) config('app.url', 'http://127.0.0.1'), '/');
         $uri = $baseUrl.'/'.ltrim($relativePath, '/');
-        $request = Request::create($uri, strtoupper($method), $payload);
+        $verb = strtoupper($method);
+
+        $request = $verb === 'GET'
+            ? Request::create($uri, 'GET', $query)
+            : Request::create($uri, $verb, $payload);
+
         $request->setRouteResolver(static function () use ($request): Route {
             return app(Router::class)->getRoutes()->match($request);
         });
@@ -164,18 +179,22 @@ class ApiService
     // PROFESSORES
     public function getProfessores()
     {
-
         try {
+            $base = $this->createMatchedApiRequest('GET', 'api/professores/listar');
+            $formRequest = ListarProfessoresRequest::createFrom($base);
+            $formRequest->setContainer(app())->setRedirector(app('redirect'));
+            $formRequest->validateResolved();
 
             $controller = new Professores();
-            $request = new Request();
-            $response = $controller->listar($request);
+            $response = $controller->listar($formRequest);
             $conteudo = $response->getData(true);
 
             if (isset($conteudo['dados']) && is_array($conteudo['dados'])) {
                 return $conteudo['dados'];
             }
 
+            return [];
+        } catch (ValidationException $e) {
             return [];
         } catch (\Exception $e) {
             return [];
@@ -184,12 +203,16 @@ class ApiService
 
     public function getProfessor($id)
     {
-
         try {
+            $id = (int) $id;
 
             $controller = new Professores();
             $response = $controller->detalhar($id);
             $dados = $response->getData(true);
+
+            if (($dados['codigo'] ?? null) === 404) {
+                return [];
+            }
 
             if (isset($dados['dados']) && is_array($dados['dados'])) {
                 return $dados['dados'];
@@ -203,15 +226,23 @@ class ApiService
 
     public function createProfessor($dados)
     {
-
         try {
+            $payload = $this->toArray($dados);
+            $base = Request::create('/', 'POST', $payload);
+            $formRequest = StoreProfessorRequest::createFrom($base);
+            $formRequest->setContainer(app())->setRedirector(app('redirect'));
+            $formRequest->validateResolved();
 
             $controller = new Professores();
-            $request = new Request();
-            $request->merge($dados);
-            $response = $controller->cadastrar($request);
+            $response = $controller->cadastrar($formRequest);
 
             return $response->getData(true);
+        } catch (ValidationException $e) {
+            return [
+                'codigo' => 422,
+                'mensagem' => 'Erro de validação',
+                'dados' => ['erros' => $e->errors()],
+            ];
         } catch (\Exception $e) {
             return ['error' => $e->getMessage()];
         }
@@ -219,16 +250,25 @@ class ApiService
 
     public function updateProfessor($id, $dados)
     {
-
         try {
+            $id = (int) $id;
+            $payload = $this->toArray($dados);
+
+            $base = $this->createMatchedApiRequest('PUT', "api/professores/atualizar/{$id}", $payload);
+            $formRequest = UpdateProfessorRequest::createFrom($base);
+            $formRequest->setContainer(app())->setRedirector(app('redirect'));
+            $formRequest->validateResolved();
 
             $controller = new Professores();
-            $request = new Request();
-            $request->merge($dados);
-            $request->headers->set('Content-Type', 'application/json');
-            $response = $controller->atualizar($request, $id);
+            $response = $controller->atualizar($formRequest, $id);
 
             return $response->getData(true);
+        } catch (ValidationException $e) {
+            return [
+                'codigo' => 422,
+                'mensagem' => 'Erro de validação',
+                'dados' => ['erros' => $e->errors()],
+            ];
         } catch (\Exception $e) {
             return ['error' => $e->getMessage()];
         }
@@ -236,13 +276,11 @@ class ApiService
 
     public function deleteProfessor($id)
     {
-
         try {
-
             $controller = new Professores();
-            $response = $controller->apagar($id);
+            $response = $controller->apagar((int) $id);
 
-            return $this->toArray($response);
+            return $response->getData(true);
         } catch (\Exception $e) {
             return ['error' => $e->getMessage()];
         }
@@ -251,18 +289,22 @@ class ApiService
     // DISCIPLINAS
     public function getDisciplinas()
     {
-
         try {
+            $base = $this->createMatchedApiRequest('GET', 'api/disciplinas/listar');
+            $formRequest = ListarDisciplinasRequest::createFrom($base);
+            $formRequest->setContainer(app())->setRedirector(app('redirect'));
+            $formRequest->validateResolved();
 
             $controller = new Disciplinas();
-            $request = new Request();
-            $response = $controller->listar($request);
+            $response = $controller->listar($formRequest);
             $conteudo = $response->getData(true);
 
             if (isset($conteudo['dados']) && is_array($conteudo['dados'])) {
                 return $conteudo['dados'];
             }
 
+            return [];
+        } catch (ValidationException $e) {
             return [];
         } catch (\Exception $e) {
             return [];
@@ -271,12 +313,16 @@ class ApiService
 
     public function getDisciplina($id)
     {
-
         try {
+            $id = (int) $id;
 
             $controller = new Disciplinas();
             $response = $controller->detalhar($id);
             $dados = $response->getData(true);
+
+            if (($dados['codigo'] ?? null) === 404) {
+                return [];
+            }
 
             if (isset($dados['dados']) && is_array($dados['dados'])) {
                 return $dados['dados'];
@@ -290,15 +336,23 @@ class ApiService
 
     public function createDisciplina($dados)
     {
-
         try {
+            $payload = $this->toArray($dados);
+            $base = Request::create('/', 'POST', $payload);
+            $formRequest = StoreDisciplinaRequest::createFrom($base);
+            $formRequest->setContainer(app())->setRedirector(app('redirect'));
+            $formRequest->validateResolved();
 
             $controller = new Disciplinas();
-            $request = new Request();
-            $request->merge($dados);
-            $response = $controller->cadastrar($request);
+            $response = $controller->cadastrar($formRequest);
 
             return $response->getData(true);
+        } catch (ValidationException $e) {
+            return [
+                'codigo' => 422,
+                'mensagem' => 'Erro de validação',
+                'dados' => ['erros' => $e->errors()],
+            ];
         } catch (\Exception $e) {
             return ['error' => $e->getMessage()];
         }
@@ -306,16 +360,25 @@ class ApiService
 
     public function updateDisciplina($id, $dados)
     {
-
         try {
+            $id = (int) $id;
+            $payload = $this->toArray($dados);
+
+            $base = $this->createMatchedApiRequest('PUT', "api/disciplinas/atualizar/{$id}", $payload);
+            $formRequest = UpdateDisciplinaRequest::createFrom($base);
+            $formRequest->setContainer(app())->setRedirector(app('redirect'));
+            $formRequest->validateResolved();
 
             $controller = new Disciplinas();
-            $request = new Request();
-            $request->merge($dados);
-            $request->headers->set('Content-Type', 'application/json');
-            $response = $controller->atualizar($request, $id);
+            $response = $controller->atualizar($formRequest, $id);
 
             return $response->getData(true);
+        } catch (ValidationException $e) {
+            return [
+                'codigo' => 422,
+                'mensagem' => 'Erro de validação',
+                'dados' => ['erros' => $e->errors()],
+            ];
         } catch (\Exception $e) {
             return ['error' => $e->getMessage()];
         }
@@ -323,33 +386,35 @@ class ApiService
 
     public function deleteDisciplina($id)
     {
-
         try {
-
             $controller = new Disciplinas();
-            $response = $controller->apagar($id);
-            
-            return $this->toArray($response);
+            $response = $controller->apagar((int) $id);
+
+            return $response->getData(true);
         } catch (\Exception $e) {
             return ['error' => $e->getMessage()];
         }
     }
 
     // ALUNOS DISCIPLINAS (MATRICULAS)
-    public function getMatriculas()
+    public function getMatriculas(array $query = [])
     {
-
         try {
+            $base = $this->createMatchedApiRequest('GET', 'api/alunos-disciplinas/listar', [], $query);
+            $formRequest = ListarMatriculasRequest::createFrom($base);
+            $formRequest->setContainer(app())->setRedirector(app('redirect'));
+            $formRequest->validateResolved();
 
             $controller = new AlunosDisciplinas();
-            $request = new Request();
-            $response = $controller->listar($request);
+            $response = $controller->listar($formRequest);
             $conteudo = $response->getData(true);
 
             if (isset($conteudo['dados']) && is_array($conteudo['dados'])) {
                 return $conteudo['dados'];
             }
 
+            return [];
+        } catch (ValidationException $e) {
             return [];
         } catch (\Exception $e) {
             return [];
@@ -358,12 +423,16 @@ class ApiService
 
     public function getMatricula($id)
     {
-
         try {
+            $id = (int) $id;
 
             $controller = new AlunosDisciplinas();
             $response = $controller->detalhar($id);
             $dados = $response->getData(true);
+
+            if (($dados['codigo'] ?? null) === 404) {
+                return [];
+            }
 
             if (isset($dados['dados']) && is_array($dados['dados'])) {
                 return $dados['dados'];
@@ -378,11 +447,22 @@ class ApiService
     public function createMatricula($dados)
     {
         try {
+            $payload = $this->toArray($dados);
+            $base = Request::create('/', 'POST', $payload);
+            $formRequest = StoreMatriculaRequest::createFrom($base);
+            $formRequest->setContainer(app())->setRedirector(app('redirect'));
+            $formRequest->validateResolved();
+
             $controller = new AlunosDisciplinas();
-            $request = new Request();
-            $request->merge($dados);
-            $response = $controller->cadastrar($request);
+            $response = $controller->cadastrar($formRequest);
+
             return $response->getData(true);
+        } catch (ValidationException $e) {
+            return [
+                'codigo' => 422,
+                'mensagem' => 'Erro de validação',
+                'dados' => ['erros' => $e->errors()],
+            ];
         } catch (\Exception $e) {
             return ['error' => $e->getMessage()];
         }
@@ -390,16 +470,25 @@ class ApiService
 
     public function updateMatricula($id, $dados)
     {
-
         try {
+            $id = (int) $id;
+            $payload = $this->toArray($dados);
+
+            $base = $this->createMatchedApiRequest('PUT', "api/alunos-disciplinas/atualizar/{$id}", $payload);
+            $formRequest = UpdateMatriculaRequest::createFrom($base);
+            $formRequest->setContainer(app())->setRedirector(app('redirect'));
+            $formRequest->validateResolved();
 
             $controller = new AlunosDisciplinas();
-            $request = new Request();
-            $request->merge($dados);
-            $request->headers->set('Content-Type', 'application/json');
-            $response = $controller->atualizar($request, $id);
-            
+            $response = $controller->atualizar($formRequest, $id);
+
             return $response->getData(true);
+        } catch (ValidationException $e) {
+            return [
+                'codigo' => 422,
+                'mensagem' => 'Erro de validação',
+                'dados' => ['erros' => $e->errors()],
+            ];
         } catch (\Exception $e) {
             return ['error' => $e->getMessage()];
         }
@@ -407,13 +496,11 @@ class ApiService
 
     public function deleteMatricula($id)
     {
-
         try {
-
             $controller = new AlunosDisciplinas();
-            $response = $controller->apagar($id);
+            $response = $controller->apagar((int) $id);
 
-            return $this->toArray($response);
+            return $response->getData(true);
         } catch (\Exception $e) {
             return ['error' => $e->getMessage()];
         }
