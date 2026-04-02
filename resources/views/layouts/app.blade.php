@@ -28,18 +28,38 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                    @auth
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                             Cadastros
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="{{ route('alunos.index') }}">Alunos</a></li>
                             <li><a class="dropdown-item" href="{{ route('professores.index') }}">Professores</a></li>
                             <li><a class="dropdown-item" href="{{ route('disciplinas.index') }}">Disciplinas</a></li>
-                            <li><a class="dropdown-item" href="{{ route('alunos-disciplinas.index') }}">Matriculas</a></li>
+                            <li><a class="dropdown-item" href="{{ route('alunos-disciplinas.index') }}">Matrículas</a></li>
                         </ul>
                     </li>
+                    <li class="nav-item">
+                        <span class="nav-link disabled text-white-50 small">{{ Auth::user()->name }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-outline-light btn-sm">Sair</button>
+                        </form>
+                    </li>
+                    @else
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">Entrar</a>
+                    </li>
+                    @if (Route::has('register'))
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('register') }}">Cadastre-se</a>
+                    </li>
+                    @endif
+                    @endauth
                 </ul>
             </div>
         </div>
