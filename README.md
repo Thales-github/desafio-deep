@@ -38,7 +38,7 @@ Este projeto é uma aplicação web completa para gerenciamento de escola, com u
 - Docker e Docker Compose
 - Git
 
-### Passo a Passo para Instalação e Deploy
+### Passo a Passo para Instalação e Deploy(WSl)
 
 ```bash
 
@@ -51,11 +51,14 @@ cd desafio-deep
 #### 3. Subir aplicação Laravel
 composer run dev
 
-#### 4.Subir contêiner Docker
+#### 4. Subir contêiner Docker
 docker compose up -d
+
+### 4.1 Subir contêiner com Laravel Sail
+./sail up -d
 
 #### 5.Executar as migrations do banco de dados
 php artisan migrate
 
-#### 6.acessar a aplicação web
+#### 6. Acessar a aplicação web
 http://localhost:8000/alunos
