@@ -9,10 +9,9 @@
         <a href="{{ route('disciplinas.index') }}" class="btn btn-outline-secondary btn-sm">Voltar</a>
     </div>
     <div class="card-body">
-        <p><strong>ID:</strong> {{ $disciplina['id'] ?? '-' }}</p>
         <p><strong>Nome:</strong> {{ $disciplina['nome'] ?? '-' }}</p>
-        <p><strong>Descricao:</strong> {{ $disciplina['descricao'] ?? '-' }}</p>
-        <p><strong>Professor ID:</strong> {{ $disciplina['professor_id'] ?? '-' }}</p>
+        <p><strong>Descrição:</strong> {{ $disciplina['descricao'] ?? '-' }}</p>
+        <p><strong>Professor(a):</strong> {{ $disciplina["professor"]['nome'] ?? '-' }}</p>
     </div>
 </div>
 @endsection

@@ -15,7 +15,7 @@
                     <th>ID</th>
                     <th>Nome</th>
                     <th>Descricao</th>
-                    <th>Professor ID</th>
+                    <th>Professor</th>
                     <th>Acoes</th>
                 </tr>
             </thead>
@@ -25,7 +25,7 @@
                     <td>{{ $disciplina['id'] ?? '-' }}</td>
                     <td>{{ $disciplina['nome'] ?? '-' }}</td>
                     <td>{{ $disciplina['descricao'] ?? '-' }}</td>
-                    <td>{{ $disciplina['professor_id'] ?? '-' }}</td>
+                    <td>{{ $disciplina['professor']['nome'] ?? '-' }}</td>
                     <td>
                         <a href="{{ route('disciplinas.show', $disciplina['id']) }}" class="btn btn-info btn-sm text-white">Ver</a>
                         <a href="{{ route('disciplinas.edit', $disciplina['id']) }}" class="btn btn-warning btn-sm">Editar</a>

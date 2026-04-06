@@ -31,10 +31,15 @@ class StoreProfessorRequest extends FormRequest
             'nome' => 'required|string|max:100',
             'email' => 'required|email|unique:professores,email|max:100',
             'documento_unico' => 'required|digits:11|unique:professores,documento_unico',
-            'data_nascimento' => 'required|date|before:today',
+    
+            // Maior de 18 anos
+            'data_nascimento' => 'required|date|before:-18 years',
+    
             'telefone' => 'nullable|digits_between:10,11',
             'nivel_formacao' => 'integer|in:0,1,2,3',
-            'ativo' => 'integer|in:0,1',
+    
+            // Não pode ser inativo
+            'ativo' => 'required|integer|in:1',
         ];
     }
 
@@ -53,7 +58,7 @@ class StoreProfessorRequest extends FormRequest
             'nome.max' => 'nome deve ter no máximo :max caracteres.',
             'data_nascimento.required' => 'data_nascimento é obrigatória.',
             'data_nascimento.date' => 'data_nascimento inválida.',
-            'data_nascimento.before' => 'Você deve ter pelo menos 16 anos para se cadastrar.',
+            'data_nascimento.before' => 'Você deve ter pelo menos 18 anos para se cadastrar.',
             'telefone.digits_between' => 'telefone inválido.',
             'nivel_formacao.integer' => 'nivel_formacao inválido.',
             'nivel_formacao.in' => 'nivel_formacao inválido.',
