@@ -24,6 +24,7 @@ Este projeto é uma aplicação web completa para gerenciamento de escola, com u
 | Laravel    | 12.x   | Framework PHP            |
 | MySQL      | 8.0    | Banco de dados           |
 | Docker     | 24.0+  | Containerização (Laravel Sail) |
+| Blade  |     12.x   | Motor de templates       |
 | Bootstrap  | 5.3    | Framework CSS            |
 | jQuery     | 3.7+   | Manipulação DOM e AJAX   |
 | DataTables | 1.13+  | Tabelas dinâmicas        |
